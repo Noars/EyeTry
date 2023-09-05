@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+    id 'application'
+    id "org.openjfx.javafxplugin" version "0.1.0"
+    id "de.undercouch.download" version "5.5.0"
+}
+
+apply from: "${rootDir}/gradle/tobii/drivers.gradle"
+
+group 'main'
+version '1.0-SNAPSHOT'
+
+application {
+    mainClass = 'application.Main'
+}
+
+javafx {
+    version = "20.0.2"
+    modules = ['javafx.controls', 'javafx.swing', 'javafx.media', 'javafx.web']
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+    maven {
+        url = 'https://jitpack.io'
+    }
+}
+
+dependencies {
+    implementation 'com.github.GazePlay:TobiiStreamEngineForJava:5.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+}
+
+test {
+    useJUnitPlatform()
+}
