@@ -10,7 +10,9 @@ import java.util.concurrent.Executors;
 public class TobiiGazeDeviceManager{
 
     Coordinates coordinates;
-    public PositionPollerRunnable positionPollerRunnable;
+    PositionPollerRunnable positionPollerRunnable;
+    ExecutorService executorService;
+
 
     public TobiiGazeDeviceManager(Coordinates coordinates){
         super();
@@ -18,35 +20,30 @@ public class TobiiGazeDeviceManager{
     }
 
     public void setPause(boolean status) {
-        positionPollerRunnable.pauseRequested = status;
+        this.positionPollerRunnable.pauseRequested = status;
     }
 
     public void init(){
-        System.out.println("Init Tobii Gaze Device Manager");
 
         Tobii.gazePosition();
 
         try {
-            positionPollerRunnable = new PositionPollerRunnable(this, coordinates);
+            this.positionPollerRunnable = new PositionPollerRunnable(this.coordinates);
         } catch (AWTException e) {
             e.printStackTrace();
         }
-        ExecutorService executorService = Executors.newFixedThreadPool(4,
+        this.executorService = Executors.newFixedThreadPool(4,
                 (Runnable r) -> {
                     Thread t = new Thread(r);
                     t.setDaemon(true);
                     return t;
                 }
         );
-        executorService.submit(positionPollerRunnable);
+        this.executorService.submit(this.positionPollerRunnable);
     }
 
-    /*@Override
     public void destroy() {
-        positionPollerRunnable.setStopRequested(true);
-        ExecutorService executorService = this.executorService;
-        if (executorService != null) {
-            executorService.shutdown();
-        }
-    }*/
+        this.positionPollerRunnable.stopRequested = true;
+        this.executorService.shutdown();
+    }
 }

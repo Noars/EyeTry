@@ -9,7 +9,7 @@ public class CustomizedDecoratedButton extends Button {
 
     public CustomizedDecoratedButton(String name, String urlImg){
         super(name);
-        getStyleClass().add("topBarButton");
+        getStyleClass().add("customizedDecoratedButton");
         ImageView img = new ImageView(new Image(urlImg));
         img.setPreserveRatio(true);
         img.setFitWidth(50);

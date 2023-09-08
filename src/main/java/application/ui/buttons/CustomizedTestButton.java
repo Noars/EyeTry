@@ -5,22 +5,25 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class CustomizedPaneButton extends Button {
+public class CustomizedTestButton extends Button {
 
-    public CustomizedPaneButton(String name, String urlImg, String color) {
+    private final int widthButton = 100;
+    private final int heightButton = 100;
+
+    public CustomizedTestButton(String name, String urlImg, String color){
         super(name);
-        getStyleClass().add("customizedPaneButton");
+        getStyleClass().add("customizedTestButton");
         this.setGraphic(this.createButtonImageView(urlImg));
         this.getStyleClass().add(color);
         this.setContentDisplay(ContentDisplay.TOP);
-        this.setPrefHeight(200);
-        this.setPrefWidth(495. / 5);
+        this.setPrefHeight(this.heightButton);
+        this.setPrefWidth(this.widthButton);
     }
 
     public ImageView createButtonImageView(String url) {
         ImageView image = new ImageView(new Image(url));
         image.setPreserveRatio(true);
-        image.setFitWidth(495. / 6);
+        image.setFitWidth(this.widthButton / 2.0);
         return image;
     }
 }

@@ -13,20 +13,18 @@ import java.awt.*;
 public class PositionPollerRunnable implements Runnable{
 
     Coordinates coordinates;
-    private final TobiiGazeDeviceManager tobiiGazeDeviceManager;
     public transient boolean stopRequested = false;
     public transient boolean pauseRequested = true;
 
-    public PositionPollerRunnable(final TobiiGazeDeviceManager tobiiGazeDeviceManager, Coordinates coordinates) throws AWTException {
+    public PositionPollerRunnable(Coordinates coordinates) throws AWTException {
         this.coordinates = coordinates;
-        this.tobiiGazeDeviceManager = tobiiGazeDeviceManager;
     }
 
     @Override
     public void run() {
-        while (!stopRequested) {
+        while (!this.stopRequested) {
             try {
-                if (!pauseRequested) {
+                if (!this.pauseRequested) {
                     poll();
                 }
             } catch (final RuntimeException e) {

@@ -3,11 +3,9 @@ package application.ui.panes;
 import application.Main;
 import application.ui.buttons.CustomizedPaneButton;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class MainPane extends BorderPane {
@@ -16,22 +14,22 @@ public class MainPane extends BorderPane {
 
     public MainPane(Main main, Stage primaryStage) {
 
-        Button tryEye = createTestButton(main, primaryStage);
+        Button test1 = createTestButton(main, primaryStage);
 
-        mainPaneBox = new HBox(tryEye);
-        mainPaneBox.setSpacing(5);
-        mainPaneBox.setAlignment(Pos.CENTER);
-        BorderPane.setAlignment(mainPaneBox, Pos.CENTER);
-        this.setCenter(mainPaneBox);
+        this.mainPaneBox = new HBox(test1);
+        this.mainPaneBox.setSpacing(5);
+        this.mainPaneBox.setAlignment(Pos.CENTER);
+        BorderPane.setAlignment(this.mainPaneBox, Pos.CENTER);
+        this.setCenter(this.mainPaneBox);
 
         this.setStyle("-fx-background-color: #535e65; -fx-background-radius: 0 0 15 15");
     }
 
     public Button createTestButton(Main main, Stage primaryStage) {
-        Button tryEye = new CustomizedPaneButton("Play", "images/play.png", "green");
-        tryEye.setOnAction((e) -> {
-            main.goToTest(primaryStage);
+        Button test1 = new CustomizedPaneButton("Test1", "images/play.png", "green");
+        test1.setOnAction((e) -> {
+            main.goToTest(primaryStage, "1");
         });
-        return tryEye;
+        return test1;
     }
 }

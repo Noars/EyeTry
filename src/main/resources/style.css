@@ -1,4 +1,4 @@
-.customizedButton {
+.customizedPaneButton {
     -fx-background-color: grey;
     -fx-text-fill: white;
     -fx-border-color: white;
@@ -11,7 +11,7 @@
     -fx-background-radius: 16;
 }
 
-.topBarButton {
+.customizedDecoratedButton {
     -fx-background-color: #3f4152;
     -fx-text-fill: white;
     -fx-border-color: #676980;
@@ -24,7 +24,17 @@
     -fx-background-radius: 16;
 }
 
-.topBarButton:hover{
+.customizedTestButton {
+    -fx-background-radius: 60;
+    -fx-border-radius: 60;
+    -fx-border-width: 0;
+    -fx-text-fill: white;
+    -fx-border-color: white;
+    -fx-font-family: Futura;
+    -fx-font-weight: bold;
+}
+
+.customizedDecoratedButton:hover{
     -fx-background-color: derive( #3f4152 , 20% );
 }
 
@@ -49,4 +59,16 @@
 
 .green{
     -fx-background-color: #57ae3a;
+}
+
+.green:hover{
+    -fx-background-color: derive( #57ae3a, 20% );
+}
+
+.grey{
+    -fx-background-color: #969696;
+}
+
+.grey:hover {
+    -fx-background-color: derive( #969696 , 20% );
 }
