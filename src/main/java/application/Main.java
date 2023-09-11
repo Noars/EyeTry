@@ -13,6 +13,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import utils.Coordinates;
+import utils.Save;
 
 public class Main extends Application {
 
@@ -21,6 +22,7 @@ public class Main extends Application {
     TestPane testPane;
     MainPane mainPane;
     DecoratedPane decoratedPane;
+    Save save;
 
     private final int defaultWidth = 600;
     private final int defaultHeight = 300;
@@ -36,10 +38,11 @@ public class Main extends Application {
         primaryStage.setHeight(this.defaultHeight);
         primaryStage.setTitle("EyeTry");
 
+        this.save = new Save();
         this.coordinates = new Coordinates(primaryStage.getWidth(), primaryStage.getHeight());
         this.tobiiGazeDeviceManager = GazeDeviceManagerFactory.instance.createNewGazeListener(this.coordinates);
         this.mainPane = new MainPane(this, primaryStage);
-        this.testPane = new TestPane(this, primaryStage, this.coordinates, this.tobiiGazeDeviceManager);
+        this.testPane = new TestPane(this, primaryStage, this.coordinates, this.tobiiGazeDeviceManager, this.save);
         this.decoratedPane = new DecoratedPane(primaryStage, this.tobiiGazeDeviceManager);
         this.decoratedPane.setCenter(this.mainPane);
 
