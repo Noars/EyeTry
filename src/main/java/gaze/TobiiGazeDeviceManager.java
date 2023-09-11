@@ -7,7 +7,7 @@ import java.awt.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class TobiiGazeDeviceManager{
+public class TobiiGazeDeviceManager extends AbstractGazeDeviceManager{
 
     Coordinates coordinates;
     PositionPollerRunnable positionPollerRunnable;
@@ -28,7 +28,7 @@ public class TobiiGazeDeviceManager{
         Tobii.gazePosition();
 
         try {
-            this.positionPollerRunnable = new PositionPollerRunnable(this.coordinates);
+            this.positionPollerRunnable = new PositionPollerRunnable(this, this.coordinates);
         } catch (AWTException e) {
             e.printStackTrace();
         }

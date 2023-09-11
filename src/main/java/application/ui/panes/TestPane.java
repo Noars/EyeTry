@@ -2,10 +2,10 @@ package application.ui.panes;
 
 import application.Main;
 import application.ui.buttons.CustomizedTestButton;
+import gaze.GazeEvent;
 import gaze.TobiiGazeDeviceManager;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -24,9 +24,11 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import lombok.extern.slf4j.Slf4j;
 import utils.Coordinates;
 import utils.Cross;
 
+@Slf4j
 public class TestPane extends Pane {
 
     Main main;
@@ -41,19 +43,20 @@ public class TestPane extends Pane {
         this.primaryStage = primaryStage;
         this.coordinates = coordinates;
         this.tobiiGazeDeviceManager = tobiiGazeDeviceManager;
-
-        this.getChildren().add(this.createButtonsTest());
     }
 
     public void startTest(String idTest){
+
+        this.getChildren().add(this.createButtonsTest());
         this.tobiiGazeDeviceManager.setPause(false);
-        this.createGazeVisual();
 
         switch (idTest){
             case "1" -> this.createTargetTest1();
-            case "2" -> System.out.println("Wait for more test");
-            default -> System.out.println("Can't load test");
+            case "2" -> log.info("Wait for more test");
+            default -> log.info("Can't load test");
         }
+
+        this.createGazeVisual();
     }
 
     public HBox createButtonsTest(){
@@ -63,6 +66,7 @@ public class TestPane extends Pane {
 
         Button btnReturn = new CustomizedTestButton("Retour", "images/back.png", "grey");
         btnReturn.setOnAction((e) -> {
+            this.dispose();
             this.tobiiGazeDeviceManager.setPause(true);
             this.main.goToMain(this.primaryStage);
         });
@@ -152,13 +156,29 @@ public class TestPane extends Pane {
     }
 
     public void createRotateEvent(Circle circleTarget, Cross crossTarget){
-        EventHandler<Event> eventCircleTopCenter = e -> {
+        /*EventHandler<Event> eventMouseCircleTarget = e -> {
             if (e.getEventType() == MouseEvent.MOUSE_ENTERED) {
                 crossTarget.startRotateCrossAnimation();
             }else if (e.getEventType() == MouseEvent.MOUSE_EXITED){
                 crossTarget.stopRotateCrossAnimation();
             }
         };
-        circleTarget.addEventHandler(MouseEvent.ANY, eventCircleTopCenter);
+        circleTarget.addEventHandler(MouseEvent.ANY, eventMouseCircleTarget);*/
+
+        EventHandler<Event> eventGazeCircleTarget = e -> {
+            if (e.getEventType() == GazeEvent.GAZE_ENTERED) {
+                crossTarget.startRotateCrossAnimation();
+            }
+            else if (e.getEventType() == GazeEvent.GAZE_EXITED){
+                crossTarget.stopRotateCrossAnimation();
+            }
+        };
+        circleTarget.addEventHandler(GazeEvent.ANY, eventGazeCircleTarget);
+        this.tobiiGazeDeviceManager.addEventFilter(circleTarget);
+    }
+
+    public void dispose(){
+        this.getChildren().clear();
+        this.tobiiGazeDeviceManager.clear();
     }
 }

@@ -1,5 +1,6 @@
 package gaze;
 
+import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
@@ -13,10 +14,12 @@ import java.awt.*;
 public class PositionPollerRunnable implements Runnable{
 
     Coordinates coordinates;
+    public final TobiiGazeDeviceManager tobiiGazeDeviceManager;
     public transient boolean stopRequested = false;
     public transient boolean pauseRequested = true;
 
-    public PositionPollerRunnable(Coordinates coordinates) throws AWTException {
+    public PositionPollerRunnable(TobiiGazeDeviceManager tobiiGazeDeviceManager, Coordinates coordinates) throws AWTException {
+        this.tobiiGazeDeviceManager = tobiiGazeDeviceManager;
         this.coordinates = coordinates;
     }
 
@@ -28,13 +31,13 @@ public class PositionPollerRunnable implements Runnable{
                     poll();
                 }
             } catch (final RuntimeException e) {
-                System.out.println("Exception while polling position of main.gaze -> " + e);
+                log.warn("Exception while polling position of main.gaze -> " + e);
             }
             // sleep is mandatory to avoid too much calls to gazePosition()
             try {
                 Thread.sleep(10);
             } catch (InterruptedException | RuntimeException e) {
-                System.out.println("Exception while sleeping until next poll -> " + e);
+                log.warn("Exception while sleeping until next poll -> " + e);
             }
         }
     }
@@ -56,6 +59,7 @@ public class PositionPollerRunnable implements Runnable{
             final Point2D point = new Point2D(positionX + offsetX, positionY + offsetY);
             this.coordinates.posX = (int) point.getX();
             this.coordinates.posY = (int) point.getY();
+            Platform.runLater(() -> this.tobiiGazeDeviceManager.onGazeUpdate(point, "gaze"));
         }
     }
 }

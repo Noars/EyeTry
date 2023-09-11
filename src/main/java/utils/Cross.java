@@ -32,7 +32,7 @@ public class Cross extends Group {
     public void createRotateCrossAnimation(){
         this.rotateCross = new Timeline();
         this.rotateCross.getKeyFrames().addAll(
-                new KeyFrame(Duration.millis(500), // set start position at 0
+                new KeyFrame(Duration.millis(500),
                         new KeyValue(this.rotateProperty(), 0),
                         new KeyValue(this.rotateProperty(), 360)));
         this.rotateCross.setCycleCount(Timeline.INDEFINITE);
