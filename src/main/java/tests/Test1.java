@@ -9,7 +9,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
-import utils.AccuracyMetrics;
+import utils.AccuracyPrecisionMetrics;
 import utils.Coordinates;
 import utils.Cross;
 import utils.Save;
@@ -20,7 +20,7 @@ public class Test1 {
     TobiiGazeDeviceManager tobiiGazeDeviceManager;
     Coordinates coordinates;
     Save save;
-    AccuracyMetrics accuracyMetrics;
+    AccuracyPrecisionMetrics accuracyMetrics;
 
     public Test1(TestPane testPane, TobiiGazeDeviceManager tobiiGazeDeviceManager, Coordinates coordinates, Save save){
         this.testPane = testPane;
@@ -28,7 +28,7 @@ public class Test1 {
         this.coordinates = coordinates;
         this.save = save;
 
-        this.accuracyMetrics = new AccuracyMetrics(this.testPane, this.coordinates, this.save, "Test1", 3);
+        this.accuracyMetrics = new AccuracyPrecisionMetrics(this.testPane, this.coordinates, this.save, "Test1", 3);
     }
 
     public void createTargetTest1(){
