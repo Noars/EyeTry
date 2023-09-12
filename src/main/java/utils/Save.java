@@ -53,28 +53,28 @@ public class Save {
 
     public void saveMetricsValues(){
 
-        FileWriter myWritter = null;
+        FileWriter save = null;
         try {
-            myWritter = new FileWriter(this.folderPath + "\\" + this.nameSaveFile + ".txt", StandardCharsets.UTF_8);
-            myWritter.write(this.nameTest + "\r\n");
-            myWritter.write("\r\n");
-            myWritter.write("Accuracy \r\n");
+            save = new FileWriter(this.folderPath + "\\" + this.nameSaveFile + ".txt", StandardCharsets.UTF_8);
+            save.write(this.nameTest + "\r\n");
+            save.write("\r\n");
+            save.write("Accuracy \r\n");
             for (int i = 0; i<this.accuracyMetrics.size(); i++){
-                myWritter.write(this.nameTarget.get(i) + " -> " + this.accuracyMetrics.get(i) + "%");
-                myWritter.write("\r\n");
+                save.write(this.nameTarget.get(i) + " -> " + this.accuracyMetrics.get(i) + "%");
+                save.write("\r\n");
             }
-            myWritter.write("\r\n");
-            myWritter.write("Precision \r\n");
+            save.write("\r\n");
+            save.write("Precision \r\n");
             for (int i = 0; i<this.precisionMetrics.size(); i++){
-                myWritter.write(this.nameTarget.get(i) + " -> " + this.precisionMetrics.get(i) + "%");
-                myWritter.write("\r\n");
+                save.write(this.nameTarget.get(i) + " -> " + this.precisionMetrics.get(i) + "%");
+                save.write("\r\n");
             }
         }catch (IOException e){
             e.printStackTrace();
         }finally {
             try {
-                if (myWritter != null){
-                    myWritter.close();
+                if (save != null){
+                    save.close();
                 }
             }catch (IOException e2){
                 e2.printStackTrace();

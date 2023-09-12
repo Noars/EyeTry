@@ -15,6 +15,7 @@ import tests.Test1;
 import utils.Coordinates;
 import utils.GazePreview;
 import utils.Save;
+import utils.Settings;
 
 @Slf4j
 public class TestPane extends Pane {
@@ -26,16 +27,17 @@ public class TestPane extends Pane {
     Test1 test1;
     GazePreview gazePreview;
     Save save;
+    Settings settings;
 
-    public TestPane(Main main, Stage primaryStage, Coordinates coordinates, TobiiGazeDeviceManager tobiiGazeDeviceManager, Save save) {
+    public TestPane(Main main, Stage primaryStage, Coordinates coordinates, TobiiGazeDeviceManager tobiiGazeDeviceManager, Save save, Settings settings) {
         super();
         this.main = main;
         this.primaryStage = primaryStage;
         this.coordinates = coordinates;
         this.tobiiGazeDeviceManager = tobiiGazeDeviceManager;
         this.save = save;
+        this.settings = settings;
 
-        this.test1 = new Test1(this, this.tobiiGazeDeviceManager, this.coordinates, this.save);
         this.gazePreview = new GazePreview(this, this.coordinates);
     }
 
@@ -44,10 +46,13 @@ public class TestPane extends Pane {
         this.getChildren().add(this.createButtonsTest());
         this.tobiiGazeDeviceManager.setPause(false);
 
-        switch (idTest){
-            case "1" -> this.test1.createTargetTest1();
+        switch (idTest) {
+            case "1" -> {
+                this.test1 = new Test1(this, this.tobiiGazeDeviceManager, this.coordinates, this.save, this.settings);
+                this.test1.createTargetTest1();
+            }
             case "2" -> log.info("Wait for more test");
-            default -> log.info("Can't load test");
+            default -> log.info("Default");
         }
 
         this.gazePreview.createGazePreview();
@@ -67,12 +72,12 @@ public class TestPane extends Pane {
 
         Button btnVisual = new CustomizedTestButton("Pr\u00e9visu", "images/show.png", "grey");
         btnVisual.setOnAction((e) -> {
-            if (this.coordinates.activeGazeVisual){
-                this.coordinates.activeGazeVisual = false;
+            if (this.coordinates.enableGazePreview){
+                this.coordinates.enableGazePreview = false;
                 this.coordinates.opacity = 0;
                 ((ImageView) btnVisual.getGraphic()).setImage(new Image("images/hide.png"));
             }else {
-                this.coordinates.activeGazeVisual = true;
+                this.coordinates.enableGazePreview = true;
                 this.coordinates.opacity = 1;
                 ((ImageView) btnVisual.getGraphic()).setImage(new Image("images/show.png"));
             }

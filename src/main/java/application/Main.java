@@ -1,19 +1,22 @@
 package application;
 
-import application.ui.panes.DecoratedPane;
+import application.ui.panes.DecoratedMainPane;
 import application.ui.panes.MainPane;
+import application.ui.panes.SettingsPane;
 import application.ui.panes.TestPane;
 import gaze.GazeDeviceManagerFactory;
 import gaze.TobiiGazeDeviceManager;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import utils.Coordinates;
 import utils.Save;
+import utils.Settings;
 
 public class Main extends Application {
 
@@ -21,11 +24,13 @@ public class Main extends Application {
     TobiiGazeDeviceManager tobiiGazeDeviceManager;
     TestPane testPane;
     MainPane mainPane;
-    DecoratedPane decoratedPane;
+    SettingsPane settingsPane;
+    DecoratedMainPane decoratedMainPane;
     Save save;
+    Settings settings;
 
-    private final int defaultWidth = 600;
-    private final int defaultHeight = 300;
+    private final static int defaultWidth = 600;
+    private final static int defaultHeight = 300;
 
     public static void main(String[] args) {
         launch(args);
@@ -34,19 +39,21 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage){
 
-        primaryStage.setWidth(this.defaultWidth);
-        primaryStage.setHeight(this.defaultHeight);
+        primaryStage.setWidth(defaultWidth);
+        primaryStage.setHeight(defaultHeight);
         primaryStage.setTitle("EyeTry");
 
         this.save = new Save();
+        this.settings = new Settings();
         this.coordinates = new Coordinates(primaryStage.getWidth(), primaryStage.getHeight());
         this.tobiiGazeDeviceManager = GazeDeviceManagerFactory.instance.createNewGazeListener(this.coordinates);
-        this.mainPane = new MainPane(this, primaryStage);
-        this.testPane = new TestPane(this, primaryStage, this.coordinates, this.tobiiGazeDeviceManager, this.save);
-        this.decoratedPane = new DecoratedPane(primaryStage, this.tobiiGazeDeviceManager);
-        this.decoratedPane.setCenter(this.mainPane);
+        this.mainPane = new MainPane(this, primaryStage, this.save);
+        this.testPane = new TestPane(this, primaryStage, this.coordinates, this.tobiiGazeDeviceManager, this.save, this.settings);
+        this.decoratedMainPane = new DecoratedMainPane(primaryStage, this.tobiiGazeDeviceManager);
+        this.decoratedMainPane.setCenter(this.mainPane);
+        this.settingsPane = new SettingsPane(this, primaryStage, this.settings);
 
-        Scene scene = new Scene(this.decoratedPane, primaryStage.getWidth(), primaryStage.getHeight());
+        Scene scene = new Scene(this.decoratedMainPane, primaryStage.getWidth(), primaryStage.getHeight());
         scene.getStylesheets().add("style.css");
         primaryStage.setScene(scene);
         scene.setFill(Color.TRANSPARENT);
@@ -54,13 +61,14 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    public void goToMain(Stage primaryStage){
-        primaryStage.setX(this.defaultWidth);
-        primaryStage.setY(this.defaultHeight);
-        primaryStage.setWidth(this.defaultWidth);
-        primaryStage.setHeight(this.defaultHeight);
-        primaryStage.getScene().setRoot(this.decoratedPane);
+    public void returnMain(Stage primaryStage){
+        ((BorderPane) primaryStage.getScene().getRoot()).setCenter(this.mainPane);
     }
+
+    public void goToSettings(Stage primaryStage){
+        ((BorderPane) primaryStage.getScene().getRoot()).setCenter(this.settingsPane);
+    }
+
     public void goToTest(Stage primaryStage, String idTest){
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
         primaryStage.setX(primaryScreenBounds.getMinX());
@@ -69,5 +77,13 @@ public class Main extends Application {
         primaryStage.setHeight(primaryScreenBounds.getHeight());
         primaryStage.getScene().setRoot(this.testPane);
         this.testPane.startTest(idTest);
+    }
+
+    public void goToMain(Stage primaryStage){
+        primaryStage.setX(defaultWidth);
+        primaryStage.setY(defaultHeight);
+        primaryStage.setWidth(defaultWidth);
+        primaryStage.setHeight(defaultHeight);
+        primaryStage.getScene().setRoot(this.decoratedMainPane);
     }
 }

@@ -7,8 +7,8 @@ import javafx.scene.image.ImageView;
 
 public class CustomizedTestButton extends Button {
 
-    private final int widthButton = 100;
-    private final int heightButton = 100;
+    private final static int widthButton = 100;
+    private final static int heightButton = 100;
 
     public CustomizedTestButton(String name, String urlImg, String color){
         super(name);
@@ -16,14 +16,14 @@ public class CustomizedTestButton extends Button {
         this.setGraphic(this.createButtonImageView(urlImg));
         this.getStyleClass().add(color);
         this.setContentDisplay(ContentDisplay.TOP);
-        this.setPrefHeight(this.heightButton);
-        this.setPrefWidth(this.widthButton);
+        this.setPrefHeight(heightButton);
+        this.setPrefWidth(widthButton);
     }
 
     public ImageView createButtonImageView(String url) {
         ImageView image = new ImageView(new Image(url));
         image.setPreserveRatio(true);
-        image.setFitWidth(this.widthButton / 2.0);
+        image.setFitWidth(widthButton / 2.0);
         return image;
     }
 }

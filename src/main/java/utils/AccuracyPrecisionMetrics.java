@@ -12,12 +12,12 @@ public class AccuracyPrecisionMetrics {
     TestPane testPane;
     Coordinates coordinates;
     Save save;
+    Settings settings;
     Circle circleTarget;
     Cross crossTarget;
     String circleTargetName;
 
     private final String nameTest;
-    private final int nbPointsToGet = 10;
     private final int nbTarget;
     private int nbTargetDone = 0;
     private Point2D[] listPointsGet;
@@ -26,23 +26,24 @@ public class AccuracyPrecisionMetrics {
     private double targetPosY;
     private Timeline getAccuracyPrecisionPoints;
 
-    public AccuracyPrecisionMetrics(TestPane testPane, Coordinates coordinates, Save save, String nameTest, int nbTarget){
+    public AccuracyPrecisionMetrics(TestPane testPane, Coordinates coordinates, Save save, Settings settings, String nameTest, int nbTarget){
         this.testPane = testPane;
         this.coordinates = coordinates;
         this.save = save;
+        this.settings = settings;
         this.nameTest = nameTest;
         this.nbTarget = nbTarget;
-        this.listPointsGet = new Point2D[this.nbPointsToGet];
+        this.listPointsGet = new Point2D[this.settings.nbPointsToGet];
 
         this.createCalculations();
     }
 
     public void createCalculations(){
-        this.getAccuracyPrecisionPoints = new Timeline(new KeyFrame(Duration.millis(500), e -> {
+        this.getAccuracyPrecisionPoints = new Timeline(new KeyFrame(Duration.millis(this.settings.dwellTime), e -> {
             this.listPointsGet[this.index] = new Point2D(this.coordinates.posX, this.coordinates.posY);
             this.index++;
         }));
-        this.getAccuracyPrecisionPoints.setCycleCount(10);
+        this.getAccuracyPrecisionPoints.setCycleCount(this.settings.nbPointsToGet);
         this.getAccuracyPrecisionPoints.setOnFinished(event -> {
             this.calculationAccuracyPrecision();
             this.nbTargetDone++;
@@ -62,8 +63,8 @@ public class AccuracyPrecisionMetrics {
             distance += Math.sqrt(Math.pow((this.listPointsGet[0].getX() - this.targetPosX),2) + Math.pow((this.listPointsGet[0].getY() - this.targetPosY),2));
         }
 
-        double accuracyPercentage = Math.floor(100 - (distance / this.nbPointsToGet));
-        double precisionPercentage = Math.floor(100 - (Math.sqrt(Math.pow(distance, 2) / this.nbPointsToGet)));
+        double accuracyPercentage = Math.floor(100 - (distance / this.settings.nbPointsToGet));
+        double precisionPercentage = Math.floor(100 - (Math.sqrt(Math.pow(distance, 2) / this.settings.nbPointsToGet)));
 
         this.save.nameTarget.add(this.circleTargetName);
         this.save.accuracyMetrics.add(accuracyPercentage);
@@ -82,7 +83,7 @@ public class AccuracyPrecisionMetrics {
 
     public void stopCalculations(){
         this.getAccuracyPrecisionPoints.pause();
-        this.listPointsGet = new Point2D[this.nbPointsToGet];
+        this.listPointsGet = new Point2D[this.settings.nbPointsToGet];
         this.index = 0;
     }
 

@@ -72,3 +72,19 @@
 .grey:hover {
     -fx-background-color: derive( #969696 , 20% );
 }
+
+.orange{
+    -fx-background-color: #ffa969;
+}
+
+.orange:hover{
+    -fx-background-color: derive( #ffa969, 20% );
+}
+
+.red{
+    -fx-background-color: crimson;
+}
+
+.red:hover{
+    -fx-background-color: derive(crimson, 20%);
+}

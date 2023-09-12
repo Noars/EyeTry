@@ -9,10 +9,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
-import utils.AccuracyPrecisionMetrics;
-import utils.Coordinates;
-import utils.Cross;
-import utils.Save;
+import utils.*;
 
 public class Test1 {
 
@@ -22,13 +19,13 @@ public class Test1 {
     Save save;
     AccuracyPrecisionMetrics accuracyMetrics;
 
-    public Test1(TestPane testPane, TobiiGazeDeviceManager tobiiGazeDeviceManager, Coordinates coordinates, Save save){
+    public Test1(TestPane testPane, TobiiGazeDeviceManager tobiiGazeDeviceManager, Coordinates coordinates, Save save, Settings settings){
         this.testPane = testPane;
         this.tobiiGazeDeviceManager = tobiiGazeDeviceManager;
         this.coordinates = coordinates;
         this.save = save;
 
-        this.accuracyMetrics = new AccuracyPrecisionMetrics(this.testPane, this.coordinates, this.save, "Test1", 3);
+        this.accuracyMetrics = new AccuracyPrecisionMetrics(this.testPane, this.coordinates, this.save, settings, "Test1", 3);
     }
 
     public void createTargetTest1(){
@@ -42,7 +39,7 @@ public class Test1 {
 
         Circle circleTopCenter = new Circle(posXTopCenter, posYTopCenter, 50);
         String circleTopCenterName = "Target top center";
-        circleTopCenter.setFill(Color.LIGHTGREY);
+        circleTopCenter.setFill(Color.GREY);
         circleTopCenter.setOpacity(0.7);
 
         Cross crossTopCenter = new Cross();
@@ -56,7 +53,7 @@ public class Test1 {
 
         Circle circleBottomLeft = new Circle(posXLeftBottom, posYLeftBottom, 50);
         String circleBottomLeftName = "Target bottom left";
-        circleBottomLeft.setFill(Color.LIGHTGREY);
+        circleBottomLeft.setFill(Color.GREY);
         circleBottomLeft.setOpacity(0.7);
 
         Cross crossLeftBottom = new Cross();
@@ -70,7 +67,7 @@ public class Test1 {
 
         Circle circleBottomRight = new Circle(posXRightBottom, posYRightBottom, 50);
         String circleBottomRightName = "Target bottom right";
-        circleBottomRight.setFill(Color.LIGHTGREY);
+        circleBottomRight.setFill(Color.GREY);
         circleBottomRight.setOpacity(0.7);
 
         Cross crossRightBottom = new Cross();
