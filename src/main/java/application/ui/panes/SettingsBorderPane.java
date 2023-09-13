@@ -12,19 +12,19 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import utils.Settings;
 
-public class SettingsPane extends BorderPane {
+public class SettingsBorderPane extends BorderPane {
 
-    HBox settingsPaneBox;
+    HBox settingsBorderPaneBox;
 
-    public SettingsPane(Main main, Stage primaryStage, Settings settings){
+    public SettingsBorderPane(Main main, Stage primaryStage, Settings settings){
 
         Button returnBtn = createReturnButton(main, primaryStage);
 
-        this.settingsPaneBox = new HBox(returnBtn, this.createSettingsGridPane(settings));
-        this.settingsPaneBox.setSpacing(25);
-        this.settingsPaneBox.setAlignment(Pos.CENTER);
-        BorderPane.setAlignment(this.settingsPaneBox, Pos.CENTER);
-        this.setCenter(this.settingsPaneBox);
+        this.settingsBorderPaneBox = new HBox(returnBtn, this.createSettingsGridPane(settings));
+        this.settingsBorderPaneBox.setSpacing(25);
+        this.settingsBorderPaneBox.setAlignment(Pos.CENTER);
+        BorderPane.setAlignment(this.settingsBorderPaneBox, Pos.CENTER);
+        this.setCenter(this.settingsBorderPaneBox);
 
         this.setStyle("-fx-background-color: #535e65; -fx-background-radius: 0 0 15 15");
     }

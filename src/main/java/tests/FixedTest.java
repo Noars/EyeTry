@@ -11,7 +11,7 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
 import utils.*;
 
-public class Test1 {
+public class FixedTest {
 
     TestPane testPane;
     TobiiGazeDeviceManager tobiiGazeDeviceManager;
@@ -19,16 +19,16 @@ public class Test1 {
     Save save;
     AccuracyPrecisionMetrics accuracyMetrics;
 
-    public Test1(TestPane testPane, TobiiGazeDeviceManager tobiiGazeDeviceManager, Coordinates coordinates, Save save, Settings settings){
+    public FixedTest(TestPane testPane, TobiiGazeDeviceManager tobiiGazeDeviceManager, Coordinates coordinates, Save save, Settings settings){
         this.testPane = testPane;
         this.tobiiGazeDeviceManager = tobiiGazeDeviceManager;
         this.coordinates = coordinates;
         this.save = save;
 
-        this.accuracyMetrics = new AccuracyPrecisionMetrics(this.testPane, this.coordinates, this.save, settings, "Test1", 3);
+        this.accuracyMetrics = new AccuracyPrecisionMetrics(this.testPane, this.coordinates, this.save, settings, "Test fixe", 3);
     }
 
-    public void createTargetTest1(){
+    public void createTargetFixedTest(){
 
         this.save.createNewSave();
 

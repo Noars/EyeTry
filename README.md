@@ -1,6 +1,6 @@
 # Description du projet
 
-EyeTry est une application JavaFx qui permet de tester l' exactitude et la précision de différentes Eye Trackers.<br>
+EyeTry est une application JavaFx qui permet de tester l'exactitude et la précision de différentes Eye Trackers.<br>
 Ce projet est sous license GNU GPL3.
 
 Readme mise à jour le 13 septembre 2023.

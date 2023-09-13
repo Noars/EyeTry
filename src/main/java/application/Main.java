@@ -1,9 +1,6 @@
 package application;
 
-import application.ui.panes.DecoratedMainPane;
-import application.ui.panes.MainPane;
-import application.ui.panes.SettingsPane;
-import application.ui.panes.TestPane;
+import application.ui.panes.*;
 import gaze.GazeDeviceManagerFactory;
 import gaze.TobiiGazeDeviceManager;
 import javafx.application.Application;
@@ -23,9 +20,10 @@ public class Main extends Application {
     Coordinates coordinates;
     TobiiGazeDeviceManager tobiiGazeDeviceManager;
     TestPane testPane;
-    MainPane mainPane;
-    SettingsPane settingsPane;
-    DecoratedMainPane decoratedMainPane;
+    TestBorderPane testBorderPane;
+    MainBorderPane mainBorderPane;
+    SettingsBorderPane settingsBorderPane;
+    DecoratedBorderPane decoratedBorderPane;
     Save save;
     Settings settings;
 
@@ -47,13 +45,14 @@ public class Main extends Application {
         this.settings = new Settings();
         this.coordinates = new Coordinates(primaryStage.getWidth(), primaryStage.getHeight());
         this.tobiiGazeDeviceManager = GazeDeviceManagerFactory.instance.createNewGazeListener(this.coordinates);
-        this.mainPane = new MainPane(this, primaryStage, this.save);
+        this.mainBorderPane = new MainBorderPane(this, primaryStage, this.save);
+        this.testBorderPane = new TestBorderPane(this, primaryStage);
         this.testPane = new TestPane(this, primaryStage, this.coordinates, this.tobiiGazeDeviceManager, this.save, this.settings);
-        this.decoratedMainPane = new DecoratedMainPane(primaryStage, this.tobiiGazeDeviceManager);
-        this.decoratedMainPane.setCenter(this.mainPane);
-        this.settingsPane = new SettingsPane(this, primaryStage, this.settings);
+        this.decoratedBorderPane = new DecoratedBorderPane(primaryStage, this.tobiiGazeDeviceManager);
+        this.decoratedBorderPane.setCenter(this.mainBorderPane);
+        this.settingsBorderPane = new SettingsBorderPane(this, primaryStage, this.settings);
 
-        Scene scene = new Scene(this.decoratedMainPane, primaryStage.getWidth(), primaryStage.getHeight());
+        Scene scene = new Scene(this.decoratedBorderPane, primaryStage.getWidth(), primaryStage.getHeight());
         scene.getStylesheets().add("style.css");
         primaryStage.setScene(scene);
         scene.setFill(Color.TRANSPARENT);
@@ -62,14 +61,18 @@ public class Main extends Application {
     }
 
     public void returnMain(Stage primaryStage){
-        ((BorderPane) primaryStage.getScene().getRoot()).setCenter(this.mainPane);
+        ((BorderPane) primaryStage.getScene().getRoot()).setCenter(this.mainBorderPane);
     }
 
     public void goToSettings(Stage primaryStage){
-        ((BorderPane) primaryStage.getScene().getRoot()).setCenter(this.settingsPane);
+        ((BorderPane) primaryStage.getScene().getRoot()).setCenter(this.settingsBorderPane);
     }
 
-    public void goToTest(Stage primaryStage, String idTest){
+    public void goToTest(Stage primaryStage){
+        ((BorderPane) primaryStage.getScene().getRoot()).setCenter(this.testBorderPane);
+    }
+
+    public void launchTest(Stage primaryStage, String idTest){
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
         primaryStage.setX(primaryScreenBounds.getMinX());
         primaryStage.setY(primaryScreenBounds.getMinY());
@@ -84,6 +87,6 @@ public class Main extends Application {
         primaryStage.setY(defaultHeight);
         primaryStage.setWidth(defaultWidth);
         primaryStage.setHeight(defaultHeight);
-        primaryStage.getScene().setRoot(this.decoratedMainPane);
+        primaryStage.getScene().setRoot(this.decoratedBorderPane);
     }
 }

@@ -13,31 +13,29 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-public class MainPane extends BorderPane {
+public class MainBorderPane extends BorderPane {
 
-    HBox mainPaneBox;
+    HBox mainBorderPaneBox;
 
-    public MainPane(Main main, Stage primaryStage, Save save) {
+    public MainBorderPane(Main main, Stage primaryStage, Save save) {
 
-        Button test1 = createTestButton(main, primaryStage);
+        Button test = createTestButton(main, primaryStage);
         Button folder = createFolderButton(save);
         Button settings = createSettingsButton(main, primaryStage);
 
-        this.mainPaneBox = new HBox(test1, folder, settings);
-        this.mainPaneBox.setSpacing(5);
-        this.mainPaneBox.setAlignment(Pos.CENTER);
-        BorderPane.setAlignment(this.mainPaneBox, Pos.CENTER);
-        this.setCenter(this.mainPaneBox);
+        this.mainBorderPaneBox = new HBox(test, folder, settings);
+        this.mainBorderPaneBox.setSpacing(5);
+        this.mainBorderPaneBox.setAlignment(Pos.CENTER);
+        BorderPane.setAlignment(this.mainBorderPaneBox, Pos.CENTER);
+        this.setCenter(this.mainBorderPaneBox);
 
         this.setStyle("-fx-background-color: #535e65; -fx-background-radius: 0 0 15 15");
     }
 
     public Button createTestButton(Main main, Stage primaryStage) {
-        Button test1 = new CustomizedPaneButton("Test1", "images/play.png", "green");
-        test1.setOnAction((e) -> {
-            main.goToTest(primaryStage, "1");
-        });
-        return test1;
+        Button test = new CustomizedPaneButton("Tests", "images/play.png", "green");
+        test.setOnAction((e) -> main.goToTest(primaryStage));
+        return test;
     }
 
     public Button createFolderButton(Save save){

@@ -11,12 +11,12 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-public class DecoratedMainPane extends BorderPane {
+public class DecoratedBorderPane extends BorderPane {
 
     private double xOffset = 0;
     private double yOffset = 0;
 
-    public DecoratedMainPane(Stage primaryStage, TobiiGazeDeviceManager tobiiGazeDeviceManager) {
+    public DecoratedBorderPane(Stage primaryStage, TobiiGazeDeviceManager tobiiGazeDeviceManager) {
 
         Button exit = new CustomizedDecoratedButton("fermer", "images/close.png");
         exit.setOnAction((e) -> {
