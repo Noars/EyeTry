@@ -26,3 +26,8 @@ task createLicence(dependsOn: ['processResources'], type: Copy, group: 'license'
 }
 
 windowsDistZip.dependsOn(downloadAndExtractWindowsJRE)
+
+distZip {
+    duplicatesStrategy = 'exclude'
+}
+[bootJar, bootDistTar, bootDistZip]*.enabled = false
