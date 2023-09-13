@@ -42,9 +42,3 @@ task createLicence(dependsOn: ['processResources'], type: Copy, group: 'license'
     ])
     into("${processResources.destinationDir}/data/common")
 }
-
-windowsDistZip.dependsOn(downloadAndExtractWindowsJRE)
-
-distZip {
-    duplicatesStrategy = 'exclude'
-}

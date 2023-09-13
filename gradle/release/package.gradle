@@ -1,7 +1,4 @@
-task('packageAllDists').dependsOn('windowsDistZip')
-
-task packageApp(dependsOn: ['packageAllDists',
-                            'downloadLicenses',
+task packageApp(dependsOn: ['downloadLicenses',
                             'scriptsForRelease'], group: 'distribution') {
     tasks.findByName('packageAllDists').mustRunAfter('downloadLicenses')
     tasks.findByName('packageAllDists').mustRunAfter('scriptsForRelease')
