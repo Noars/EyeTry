@@ -1,14 +1,3 @@
-windowsDistZip.dependsOn(downloadLicenses)
-
-tasks.withType(Tar){
-    compression = Compression.GZIP
-    archiveExtension.set('tar.gz')
-}
-
-distZip {
-    duplicatesStrategy = 'exclude'
-}
-
 task('packageAllDists').dependsOn('windowsDistZip')
 
 task packageApp(dependsOn: ['packageAllDists',
@@ -22,5 +11,11 @@ task scriptsForRelease(type: Copy, group: 'distribution') {
     from "${rootDir}/src/main/bin"
     into "${rootDir}/build/bin"
 
-    outputs.upToDateWhen { false } // Forces the task to rerun every time, without requiring a clean.
+    outputs.upToDateWhen { false }
 }
+
+task packageAppWithDistPermissions(dependsOn: packageApp, type: Exec, group: 'distribution') {
+    commandLine 'chmod', '-R', '777', "${rootDir}/build/distributions"
+}
+
+beforeReleaseBuild.dependsOn packageAppWithDistPermissions
