@@ -1,0 +1,28 @@
+downloadLicenses {
+    dependencyConfiguration = 'compileClasspath'
+}
+
+distributions {
+    windows {
+        contents {
+            with distributions.main.contents
+            from("build/reports")
+            from("build/bin/interAACtionGaze-windows.bat") {
+                into 'bin'
+            }
+            from("build/jre/windows") {
+                into 'lib/jre'
+            }
+        }
+    }
+}
+
+task createLicence(dependsOn: ['processResources'], type: Copy, group: 'license') {
+    from("${rootDir}/gradle/templates/licence.txt")
+    expand([
+            "date"   : new Date().format('yyyy-MM-dd')
+    ])
+    into("${processResources.destinationDir}/data/common")
+}
+
+windowsDistZip.dependsOn(downloadAndExtractWindowsJRE)

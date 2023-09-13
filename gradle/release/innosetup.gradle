@@ -1,0 +1,63 @@
+task generateWindowsInstaller(dependsOn: ['unzipDistribution', 'prepareInnoSetupFiles'], group: 'distribution') {
+    doLast {
+
+        def innoSetupDir = new File("${buildDir}/innosetup")
+
+        exec {
+            commandLine "C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe", "${innoSetupDir}\\setup.iss"
+        }
+
+    }
+}
+
+task generateWindowsInstallerInDocker(dependsOn: ['unzipDistribution', 'prepareInnoSetupFiles'], group: 'distribution') {
+    doLast {
+        exec {
+            workingDir rootDir
+            commandLine "docker", "run", "--rm", "-i", "-v", "${buildDir}:/work", "amake/innosetup", "innosetup/setup.iss"
+        }
+    }
+}
+
+task prepareInnoSetupFiles(group: 'distribution') {
+    doLast {
+        def innoSetupDir = new File("${buildDir}/innosetup")
+
+        innoSetupDir.mkdir()
+
+        copy {
+            from("${rootDir}/gradle/innosetup/setup.iss.skel")
+            rename("setup.iss.skel", "setup.iss")
+            expand([
+                    applicationVersion: "latest",
+                    unpackedDirectory : "${project.name}-windows"
+            ])
+            into(innoSetupDir)
+        }
+
+        copy {
+            from("${rootDir}/gradle/templates/licence.txt")
+            expand([
+                    "date"   : new Date().format('yyyy-MM-dd')
+            ])
+            into(innoSetupDir)
+        }
+
+        copy {
+            from("${rootDir}/gradle/innosetup/gazeicon.ico")
+            into(innoSetupDir)
+        }
+
+        copy {
+            from("${rootDir}/gradle/innosetup/gazeicon.bmp")
+            into(innoSetupDir)
+        }
+    }
+}
+
+task unzipDistribution(dependsOn: ['packageApp'], type: Copy, group: 'distribution') {
+    from zipTree("${buildDir}/distributions/${project.name}-windows.zip")
+    into buildDir
+    fileMode 0777
+    dirMode 0777
+}

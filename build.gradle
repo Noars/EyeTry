@@ -5,9 +5,15 @@ plugins {
     id "de.undercouch.download" version "5.5.0"
     id "io.freefair.lombok" version "8.3"
     id "com.github.spotbugs" version "5.1.3"
+    id "com.github.hierynomus.license-report" version "0.16.1"
+    id 'net.researchgate.release' version '3.0.2'
 }
 
 apply from: "${rootDir}/gradle/tobii/drivers.gradle"
+apply from: "${rootDir}/gradle/release/package.gradle"
+apply from: "${rootDir}/gradle/release/jre.gradle"
+apply from: "${rootDir}/gradle/release/installer.gradle"
+apply from: "${rootDir}/gradle/release/innosetup.gradle"
 
 group 'main'
 version '1.0-SNAPSHOT'
