@@ -2,6 +2,10 @@ apply from: "${rootDir}/gradle/release/package.gradle"
 apply from: "${rootDir}/gradle/release/innosetup.gradle"
 apply from: "${rootDir}/gradle/release/windows.gradle"
 
+task('downloadAndExtractJREs', group: 'custom jre') {
+    dependsOn downloadAndExtractWindowsJRE
+}
+
 downloadLicenses {
     dependencyConfiguration = 'compileClasspath'
     includeProjectDependencies = true

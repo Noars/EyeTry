@@ -3,10 +3,6 @@ def jreSource = 'https://cdn.azul.com/zulu/bin/'
 def jreFolder = "${buildDir}/jre"
 def x64filename = "zulu17.44.15-ca-jdk17.0.8-win_x64"
 
-task('downloadAndExtractJREs', group: 'custom jre') {
-    dependsOn downloadAndExtractWindowsJRE
-}
-
 task downloadWindowsJRE(type: Download, group: 'custom jre') {
     src "${jreSource}/${x64filename}.zip"
     dest new File("${downloadLocation}/jre", 'windows-x64.zip')
