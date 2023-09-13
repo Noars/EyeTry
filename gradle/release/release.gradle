@@ -1,0 +1,172 @@
+def downloadLocation = new File(project.repositories.mavenLocal().url).getAbsolutePath()
+def jreSource = 'https://cdn.azul.com/zulu/bin/'
+def jreFolder = "${buildDir}/jre"
+def x64filename = "zulu17.44.15-ca-jdk17.0.8-win_x64"
+
+/* Download and Extract JRE */
+
+task downloadWindowsJRE(type: Download, group: 'custom jre') {
+    src "${jreSource}/${x64filename}.zip"
+    dest new File("${downloadLocation}/jre", 'windows-x64.zip')
+    overwrite false
+}
+
+task extractWindowsJRE(dependsOn: downloadWindowsJRE, type: Copy, group: 'custom jre') {
+    from zipTree(downloadWindowsJRE.dest)
+    into "${jreFolder}/windows"
+}
+
+task downloadAndExtractWindowsJRE(dependsOn: extractWindowsJRE, group: 'custom jre') {
+    doLast {
+        copy {
+            from new File(extractWindowsJRE.getDestinationDir(), x64filename)
+            into "${jreFolder}/windows"
+        }
+
+        delete "${jreFolder}/windows/${x64filename}"
+    }
+}
+
+task('downloadAndExtractJREs', group: 'custom jre') {
+    dependsOn downloadAndExtractWindowsJRE
+}
+
+/* Distribution */
+
+downloadLicenses {
+    dependencyConfiguration = 'compileClasspath'
+}
+
+jar {
+    enabled=true
+    manifest {
+        attributes(
+                "Implementation-Title": project.name,
+                "Implementation-Vendor": "Univ. Grenoble Alpes - LIG - GETALP",
+                "Main-Class": 'application.Main',
+                "Class-Path": configurations.collect { it.getName() }.join(' '),
+                "JavaFX-Version": javafxVersion,
+                "Built-By": System.properties['user.name']
+        )
+    }
+}
+
+distributions {
+    windows {
+        contents {
+            with distributions.main.contents
+            from("build/reports")
+            from("build/bin/interAACtionGaze-windows.bat") {
+                into 'bin'
+            }
+            from("build/jre/windows") {
+                into 'lib/jre'
+            }
+        }
+    }
+}
+
+tasks.jar.dependsOn('createLicence')
+
+task createLicence(dependsOn: ['processResources'], type: Copy, group: 'license') {
+    from("${rootDir}/gradle/templates/licence.txt")
+    expand([
+            "date"   : new Date().format('yyyy-MM-dd')
+    ])
+    into("${processResources.destinationDir}/data/common")
+}
+
+windowsDistZip.dependsOn(downloadLicenses)
+
+tasks.withType(Tar){
+    compression = Compression.GZIP
+    archiveExtension.set('tar.gz')
+}
+
+distZip {
+    duplicatesStrategy = 'exclude'
+}
+
+/* Package */
+
+task('packageAllDists').dependsOn('windowsDistZip')
+
+task packageApp(dependsOn: ['packageAllDists',
+                            'downloadLicenses',
+                            'scriptsForRelease'], group: 'distribution') {
+    tasks.findByName('packageAllDists').mustRunAfter('downloadLicenses')
+    tasks.findByName('packageAllDists').mustRunAfter('scriptsForRelease')
+}
+
+task scriptsForRelease(type: Copy, group: 'distribution') {
+    from "${rootDir}/src/main/bin"
+    into "${rootDir}/build/bin"
+
+    outputs.upToDateWhen { false } // Forces the task to rerun every time, without requiring a clean.
+}
+
+/* InnoSetup */
+
+task generateWindowsInstaller(dependsOn: ['unzipDistribution', 'prepareInnoSetupFiles'], group: 'distribution') {
+    doLast {
+
+        def innoSetupDir = new File("${buildDir}/innosetup")
+
+        exec {
+            commandLine "C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe", "${innoSetupDir}\\setup.iss"
+        }
+
+    }
+}
+
+task generateWindowsInstallerInDocker(dependsOn: ['unzipDistribution', 'prepareInnoSetupFiles'], group: 'distribution') {
+    doLast {
+        exec {
+            workingDir rootDir
+            commandLine "docker", "run", "--rm", "-i", "-v", "${buildDir}:/work", "amake/innosetup", "innosetup/setup.iss"
+        }
+    }
+}
+
+task prepareInnoSetupFiles(group: 'distribution') {
+    doLast {
+        def innoSetupDir = new File("${buildDir}/innosetup")
+
+        innoSetupDir.mkdir()
+
+        copy {
+            from("${rootDir}/gradle/innosetup/setup.iss.skel")
+            rename("setup.iss.skel", "setup.iss")
+            expand([
+                    applicationVersion: "latest",
+                    unpackedDirectory : "${project.name}-windows"
+            ])
+            into(innoSetupDir)
+        }
+
+        copy {
+            from("${rootDir}/gradle/templates/licence.txt")
+            expand([
+                    "date"   : new Date().format('yyyy-MM-dd')
+            ])
+            into(innoSetupDir)
+        }
+
+        copy {
+            from("${rootDir}/gradle/innosetup/gazeicon.ico")
+            into(innoSetupDir)
+        }
+
+        copy {
+            from("${rootDir}/gradle/innosetup/gazeicon.bmp")
+            into(innoSetupDir)
+        }
+    }
+}
+
+task unzipDistribution(dependsOn: ['packageApp'], type: Copy, group: 'distribution') {
+    from zipTree("${buildDir}/distributions/${project.name}-windows.zip")
+    into buildDir
+    fileMode 0777
+    dirMode 0777
+}

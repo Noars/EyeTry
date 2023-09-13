@@ -14,11 +14,7 @@ version '1.0-SNAPSHOT'
 ext.javafxVersion = "20.0.2"
 
 apply from: "${rootDir}/gradle/tobii/drivers.gradle"
-apply from: "${rootDir}/gradle/release/windows.gradle"
-apply from: "${rootDir}/gradle/release/installer.gradle"
-apply from: "${rootDir}/gradle/release/package.gradle"
-apply from: "${rootDir}/gradle/release/jre.gradle"
-apply from: "${rootDir}/gradle/release/innosetup.gradle"
+apply from: "${rootDir}/gradle/release/release.gradle"
 
 application {
     mainClass = 'application.Main'
