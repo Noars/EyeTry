@@ -1,4 +1,4 @@
-windowsDistZip.dependsOn(downloadAndExtractWindowsJRE)
+windowsDistZip.dependsOn(downloadLicenses, downloadAndExtractWindowsJRE)
 
 tasks.withType(Tar){
     compression = Compression.GZIP
