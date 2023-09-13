@@ -1,7 +1,5 @@
 task packageApp(dependsOn: ['downloadLicenses',
                             'scriptsForRelease'], group: 'distribution') {
-    tasks.findByName('packageAllDists').mustRunAfter('downloadLicenses')
-    tasks.findByName('packageAllDists').mustRunAfter('scriptsForRelease')
 }
 
 task scriptsForRelease(type: Copy, group: 'distribution') {
