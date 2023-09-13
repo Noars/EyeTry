@@ -2,6 +2,20 @@ downloadLicenses {
     dependencyConfiguration = 'compileClasspath'
 }
 
+jar {
+    enabled=true
+    manifest {
+        attributes(
+                "Implementation-Title": project.name,
+                "Implementation-Vendor": "Univ. Grenoble Alpes - LIG - GETALP",
+                "Main-Class": 'application.Main',
+                "Class-Path": configurations.collect { it.getName() }.join(' '),
+                "JavaFX-Version": javafxVersion,
+                "Built-By": System.properties['user.name']
+        )
+    }
+}
+
 distributions {
     windows {
         contents {
@@ -16,6 +30,8 @@ distributions {
         }
     }
 }
+
+tasks.jar.dependsOn('createLicence')
 
 task createLicence(dependsOn: ['processResources'], type: Copy, group: 'license') {
     from("${rootDir}/gradle/templates/licence.txt")

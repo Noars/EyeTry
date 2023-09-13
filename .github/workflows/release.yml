@@ -30,7 +30,7 @@ jobs:
 
       - name: Generate Windows Installer with InnoSetup
         run: |
-          chmod 777 build/distributions
+          chmod -R 777 build/distributions
           chmod -R 777 build/jre
           ./gradlew --stacktrace --info generateWindowsInstallerInDocker
 
