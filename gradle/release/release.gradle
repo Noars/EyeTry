@@ -6,11 +6,6 @@ task('downloadAndExtractJREs', group: 'custom jre') {
     dependsOn downloadAndExtractWindowsJRE
 }
 
-downloadLicenses {
-    dependencyConfiguration = 'compileClasspath'
-    includeProjectDependencies = true
-}
-
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
@@ -31,7 +26,10 @@ distributions {
     }
 }
 
-windowsDistZip.dependsOn(downloadAndExtractWindowsJRE)
+windowsDistZip {
+    dependsOn(downloadAndExtractWindowsJRE)
+    dependsOn(scriptsForRelease)
+}
 
 tasks.withType(Tar){
     compression = Compression.GZIP
@@ -40,15 +38,4 @@ tasks.withType(Tar){
 
 distZip {
     duplicatesStrategy = 'exclude'
-    //enabled = false
 }
-[bootJar, bootDistTar, bootDistZip]*.enabled = false
-
-release {
-    failOnPublishNeeded = false
-    failOnCommitNeeded = false
-}
-
-startScripts.enabled = false
-
-afterReleaseBuild.dependsOn generateWindowsInstallerInDocker
