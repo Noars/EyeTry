@@ -1,3 +1,5 @@
+def javafxVersion = ext.javafxVersion
+
 apply from: "${rootDir}/gradle/release/package.gradle"
 apply from: "${rootDir}/gradle/release/innosetup.gradle"
 apply from: "${rootDir}/gradle/release/windows.gradle"
@@ -8,6 +10,30 @@ task('downloadAndExtractJREs', group: 'custom jre') {
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
+}
+
+jar {
+    enabled=true
+    manifest {
+        attributes(
+                "Implementation-Title": project.name,
+                "Implementation-Vendor": "Univ. Grenoble Alpes - LIG - GETALP",
+                "Main-Class": 'application.Main',
+                "Class-Path": configurations.collect { it.getName() }.join(' '),
+                "JavaFX-Version": javafxVersion,
+                "Built-By": System.properties['user.name']
+        )
+    }
+}
+
+tasks.jar.dependsOn('createLicence')
+
+task createLicence(dependsOn: ['processResources'], type: Copy, group: 'license') {
+    from("${rootDir}/gradle/templates/licence.txt")
+    expand([
+            "date"   : new Date().format('yyyy-MM-dd')
+    ])
+    into("${processResources.destinationDir}/data/common")
 }
 
 distributions {
@@ -30,6 +56,10 @@ windowsDistZip {
     dependsOn(scriptsForRelease)
 }
 
+windowsDistTar {
+    dependsOn(scriptsForRelease)
+}
+
 tasks.withType(Tar){
     compression = Compression.GZIP
     archiveExtension.set('tar.gz')
@@ -38,3 +68,10 @@ tasks.withType(Tar){
 distZip {
     duplicatesStrategy = 'exclude'
 }
+
+release {
+    failOnPublishNeeded = false
+    failOnCommitNeeded = false
+}
+
+afterReleaseBuild.dependsOn generateWindowsInstallerInDocker

@@ -20,6 +20,14 @@ application {
     mainClass = 'application.Main'
 }
 
+sourceSets {
+    main {
+        resources {
+            srcDirs "src/resources"
+        }
+    }
+}
+
 javafx {
     version = javafxVersion
     modules = ['javafx.controls', 'javafx.swing', 'javafx.media', 'javafx.web']
