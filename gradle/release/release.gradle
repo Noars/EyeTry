@@ -12,7 +12,6 @@ tasks.withType(JavaCompile) {
 
 distributions {
     windows {
-        setDistributionBaseName "${project.name}-windows-x64"
         contents {
             with distributions.main.contents
             from("build/reports")

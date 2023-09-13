@@ -11,7 +11,6 @@ plugins {
 }
 
 group 'main'
-version '1.0-SNAPSHOT'
 ext.javafxVersion = "20.0.2"
 
 apply from: "${rootDir}/gradle/release/release.gradle"
