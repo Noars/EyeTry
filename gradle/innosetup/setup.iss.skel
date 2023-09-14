@@ -34,7 +34,7 @@ DefaultGroupName=EyeTry
 LicenseFile=licence.txt
 
 OutputDir=..\\distributions
-OutputBaseFilename=eyeTry-windows-x64-installer
+OutputBaseFilename=EyeTry-windows-x64-installer
 ;Compression=lzma
 SolidCompression=yes
 
