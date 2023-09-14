@@ -48,7 +48,7 @@ public class Main extends Application {
         this.mainBorderPane = new MainBorderPane(this, primaryStage, this.save);
         this.testBorderPane = new TestBorderPane(this, primaryStage);
         this.testPane = new TestPane(this, primaryStage, this.coordinates, this.tobiiGazeDeviceManager, this.save, this.settings);
-        this.decoratedBorderPane = new DecoratedBorderPane(primaryStage, this.tobiiGazeDeviceManager);
+        this.decoratedBorderPane = new DecoratedBorderPane(primaryStage, this.tobiiGazeDeviceManager, this.coordinates);
         this.decoratedBorderPane.setCenter(this.mainBorderPane);
         this.settingsBorderPane = new SettingsBorderPane(this, primaryStage, this.settings);
 

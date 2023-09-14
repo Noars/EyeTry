@@ -33,7 +33,7 @@ public class MainBorderPane extends BorderPane {
     }
 
     public Button createTestButton(Main main, Stage primaryStage) {
-        Button test = new CustomizedPaneButton("Tests", "images/play.png", "green");
+        Button test = new CustomizedPaneButton("Tests", "images/tests.png", "green");
         test.setOnAction((e) -> main.goToTest(primaryStage));
         return test;
     }

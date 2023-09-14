@@ -34,13 +34,13 @@ public class TestBorderPane extends BorderPane {
     }
 
     public Button createFixedTestButton(Main main, Stage primaryStage) {
-        Button fixedTest = new CustomizedPaneButton("Fixe", "images/play.png", "green");
+        Button fixedTest = new CustomizedPaneButton("Fixe", "images/play.png", "blue");
         fixedTest.setOnAction((e) -> main.launchTest(primaryStage, "1"));
         return fixedTest;
     }
 
     public Button createMovingTestButton(Main main, Stage primaryStage) {
-        Button movingTest = new CustomizedPaneButton("Mouvant", "images/play.png", "green");
+        Button movingTest = new CustomizedPaneButton("Mouvant", "images/play.png", "blue");
         movingTest.setOnAction((e) -> main.launchTest(primaryStage, "2"));
         return movingTest;
     }
