@@ -30,7 +30,7 @@ WizardImageFile=gazeicon.bmp
 WizardSmallImageFile=gazeicon.bmp
 
 DefaultDirName={commonpf}\\EyeTry
-DefaultGroupName=InteraactionGroup
+DefaultGroupName=EyeTry
 LicenseFile=licence.txt
 
 OutputDir=..\\distributions

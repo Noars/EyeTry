@@ -12,6 +12,7 @@ plugins {
 
 group 'main'
 ext.javafxVersion = "20.0.2"
+startScripts.enabled = false
 
 apply from: "${rootDir}/gradle/release/release.gradle"
 apply from: "${rootDir}/gradle/tobii/drivers.gradle"
@@ -20,17 +21,9 @@ application {
     mainClass = 'application.Main'
 }
 
-sourceSets {
-    main {
-        resources {
-            srcDirs "src/resources"
-        }
-    }
-}
-
 javafx {
     version = javafxVersion
-    modules = ['javafx.controls', 'javafx.swing', 'javafx.media', 'javafx.web']
+    modules = ['javafx.base', 'javafx.controls', 'javafx.swing', 'javafx.media', 'javafx.web']
 }
 
 repositories {

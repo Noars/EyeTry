@@ -1,11 +1,29 @@
 def javafxVersion = ext.javafxVersion
 
-apply from: "${rootDir}/gradle/release/package.gradle"
 apply from: "${rootDir}/gradle/release/innosetup.gradle"
 apply from: "${rootDir}/gradle/release/windows.gradle"
 
 task('downloadAndExtractJREs', group: 'custom jre') {
     dependsOn downloadAndExtractWindowsJRE
+}
+
+task('packageAllDists').dependsOn('windowsDistZip')
+
+task packageApp(dependsOn: ['packageAllDists',
+                            'scriptsForRelease'], group: 'distribution') {
+    tasks.findByName('packageAllDists').mustRunAfter('scriptsForRelease')
+}
+
+task scriptsForRelease(dependsOn: ['downloadLicenses'], type: Copy, group: 'distribution') {
+    from "${rootDir}/src/main/bin"
+    into "${rootDir}/build/bin"
+
+    outputs.upToDateWhen { false }
+}
+
+downloadLicenses {
+    includeProjectDependencies = true
+    dependencyConfiguration = 'compile'
 }
 
 tasks.withType(JavaCompile) {
@@ -41,10 +59,10 @@ distributions {
         contents {
             with distributions.main.contents
             from("build/reports")
-            from("build/bin/eye-try.bat") {
+            from("build/bin/eyeTry-windows.bat") {
                 into 'bin'
             }
-            from("build/jre/windows-x64") {
+            from("build/jre/windows") {
                 into 'lib/jre'
             }
         }
@@ -57,6 +75,7 @@ windowsDistZip {
 }
 
 windowsDistTar {
+    dependsOn(downloadAndExtractWindowsJRE)
     dependsOn(scriptsForRelease)
 }
 
@@ -73,5 +92,3 @@ release {
     failOnPublishNeeded = false
     failOnCommitNeeded = false
 }
-
-afterReleaseBuild.dependsOn generateWindowsInstallerInDocker
