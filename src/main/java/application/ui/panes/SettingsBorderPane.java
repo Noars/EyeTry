@@ -44,10 +44,10 @@ public class SettingsBorderPane extends BorderPane {
         gridPane.setHgap(5);
         gridPane.setVgap(10);
         {
-            Label fixationLabel = new Label("Temps de fixation:");
+            Label fixationLabel = new Label("Temps de fixation :");
             Label timeLabel = new Label("ms");
             TextField dwellTime = new TextField("" + settings.dwellTime);
-            dwellTime.setMaxWidth(50);
+            dwellTime.setMaxWidth(70);
             gridPane.add(fixationLabel, 0, 0);
             gridPane.add(dwellTime, 1, 0);
             gridPane.add(timeLabel, 2, 0);
@@ -60,9 +60,9 @@ public class SettingsBorderPane extends BorderPane {
                 settings.dwellTime = Integer.parseInt(dwellTime.getText());
             });
 
-            Label nbFixationLabel = new Label("Nombre de fixation:");
+            Label nbFixationLabel = new Label("Nombre de fixation :");
             TextField nbFixation = new TextField("" + settings.nbPointsToGet);
-            nbFixation.setMaxWidth(50);
+            nbFixation.setMaxWidth(70);
             gridPane.add(nbFixationLabel, 0, 1);
             gridPane.add(nbFixation, 1, 1);
 
@@ -72,6 +72,22 @@ public class SettingsBorderPane extends BorderPane {
                 nbFixation.setText(settings.checkValue(newValue));
                 settings.nbPointsToGet = Integer.parseInt(nbFixation.getText());
 
+            });
+
+            Label speedAnimationLabel = new Label("Vitesse des animations :");
+            TextField animationTime = new TextField("" + settings.animationTime);
+            Label speedLabel = new Label("ms");
+            animationTime.setMaxWidth(70);
+            gridPane.add(speedAnimationLabel, 0, 2);
+            gridPane.add(animationTime, 1, 2);
+            gridPane.add(speedLabel, 2, 2);
+
+            speedAnimationLabel.getStyleClass().add("text");
+            speedLabel.getStyleClass().add("text");
+
+            animationTime.textProperty().addListener((observable, oldValue, newValue) -> {
+                animationTime.setText(settings.checkValue(newValue));
+                settings.animationTime = Integer.parseInt(animationTime.getText());
             });
         }
         return gridPane;

@@ -1,4 +1,4 @@
-package utils;
+package application.ui.shapes;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -11,7 +11,7 @@ import javafx.util.Duration;
 public class Cross extends Group {
 
     Timeline rotateCross;
-    public Cross() {
+    public Cross(double posX, double posY) {
         Line horizontalLine = new Line();
         horizontalLine.setStartX(-25);
         horizontalLine.setEndX(25);
@@ -23,8 +23,10 @@ public class Cross extends Group {
         Circle center = new Circle();
         center.setRadius(2);
 
-        getChildren().addAll(horizontalLine, verticalLine, center);
-        setMouseTransparent(true);
+        this.getChildren().addAll(horizontalLine, verticalLine, center);
+        this.setLayoutX(posX);
+        this.setLayoutY(posY);
+        this.setMouseTransparent(true);
 
         this.createRotateCrossAnimation();
     }
@@ -44,5 +46,10 @@ public class Cross extends Group {
 
     public void stopRotateCrossAnimation(){
         this.rotateCross.pause();
+    }
+
+    public void dispose(){
+        this.rotateCross.getKeyFrames().clear();
+        this.rotateCross.stop();
     }
 }

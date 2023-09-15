@@ -77,11 +77,12 @@ public class Save {
         }
     }
 
-    public void saveConfig(int dwellTime, int nbPointsToGet){
+    public void saveConfig(int dwellTime, int nbPointsToGet, int animationTime){
         JSONObject json = new JSONObject();
         try {
             json.put("DwellTime", dwellTime);
             json.put("FixationLength", nbPointsToGet);
+            json.put("AnimationTime", animationTime);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -102,15 +103,16 @@ public class Save {
 
                 String dwellTime = String.valueOf(jsonSettings.get("DwellTime"));
                 String fixationLength = String.valueOf(jsonSettings.get("FixationLength"));
+                String animationTime = String.valueOf(jsonSettings.get("AnimationTime"));
 
                 fileReader.close();
 
-                return new int[]{Integer.parseInt(dwellTime), Integer.parseInt(fixationLength)};
+                return new int[]{Integer.parseInt(dwellTime), Integer.parseInt(fixationLength), Integer.parseInt(animationTime)};
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }else {
-            return new int[]{500, 10};
+            return new int[]{500, 10, 2000};
         }
     }
 }

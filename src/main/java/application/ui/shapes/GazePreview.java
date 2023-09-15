@@ -1,4 +1,4 @@
-package utils;
+package application.ui.shapes;
 
 import application.ui.panes.TestPane;
 import javafx.animation.Animation;
@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
 import javafx.util.Duration;
+import utils.Coordinates;
 
 public class GazePreview {
 

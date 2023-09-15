@@ -1,6 +1,7 @@
 package utils;
 
 import application.ui.panes.TestPane;
+import application.ui.shapes.Cross;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.shape.Circle;
@@ -39,6 +40,7 @@ public class AccuracyPrecisionMetrics {
         this.getAccuracyPrecisionPoints.setCycleCount(this.settings.nbPointsToGet);
         this.getAccuracyPrecisionPoints.setOnFinished(event -> {
             this.calculationAccuracyPrecision();
+            this.crossTarget.dispose();
             this.testPane.getChildren().removeAll(this.circleTarget, this.crossTarget);
             this.nbTargetDone++;
             this.stopCalculations();
@@ -53,7 +55,7 @@ public class AccuracyPrecisionMetrics {
 
     public void calculationAccuracyPrecision(){
         double accuracyPercentage = Math.floor(100 - (this.distance / this.settings.nbPointsToGet));
-        double precisionPercentage = Math.floor(100 - (Math.sqrt(Math.pow(this.distance, 2) / this.settings.nbPointsToGet)));
+        double precisionPercentage = Math.floor(100 - (Math.sqrt((Math.pow(this.distance, 2) / this.settings.nbPointsToGet))));
 
         this.save.nameTarget.add(this.circleTargetName);
         this.save.accuracyMetrics.add(accuracyPercentage);
