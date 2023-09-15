@@ -52,9 +52,7 @@ public class MainBorderPane extends BorderPane {
 
     public Button createSettingsButton(Main main, Stage primaryStage){
         Button settings = new CustomizedPaneButton("Options", "images/option.png", "red");
-        settings.setOnAction((e) -> {
-            main.goToSettings(primaryStage);
-        });
+        settings.setOnAction((e) -> main.goToSettings(primaryStage));
         return settings;
     }
 }

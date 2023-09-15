@@ -18,7 +18,7 @@ public class SettingsBorderPane extends BorderPane {
 
     public SettingsBorderPane(Main main, Stage primaryStage, Settings settings){
 
-        Button returnBtn = createReturnButton(main, primaryStage);
+        Button returnBtn = createReturnButton(main, primaryStage, settings);
 
         this.settingsBorderPaneBox = new HBox(returnBtn, this.createSettingsGridPane(settings));
         this.settingsBorderPaneBox.setSpacing(25);
@@ -29,9 +29,12 @@ public class SettingsBorderPane extends BorderPane {
         this.setStyle("-fx-background-color: #535e65; -fx-background-radius: 0 0 15 15");
     }
 
-    public Button createReturnButton(Main main, Stage primaryStage){
+    public Button createReturnButton(Main main, Stage primaryStage, Settings settings){
         Button returnBtn = new CustomizedPaneButton("Retour", "images/back.png", "grey");
-        returnBtn.setOnAction((e) -> main.returnMain(primaryStage));
+        returnBtn.setOnAction((e) -> {
+            settings.saveSettings();
+            main.returnMain(primaryStage);
+        });
         return returnBtn;
     }
 
@@ -55,7 +58,6 @@ public class SettingsBorderPane extends BorderPane {
             dwellTime.textProperty().addListener((observable, oldValue, newValue) -> {
                 dwellTime.setText(settings.checkValue(newValue));
                 settings.dwellTime = Integer.parseInt(dwellTime.getText());
-
             });
 
             Label nbFixationLabel = new Label("Nombre de fixation:");

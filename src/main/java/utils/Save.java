@@ -1,10 +1,12 @@
 package utils;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,7 +17,6 @@ public class Save {
 
     public String nameTest;
     public String folderPath;
-    public String nameSaveFile;
     public ArrayList<String> nameTarget = new ArrayList<>();
     public ArrayList<Double> accuracyMetrics = new ArrayList<>();
     public ArrayList<Double> precisionMetrics = new ArrayList<>();
@@ -37,48 +38,79 @@ public class Save {
         }
     }
 
-    public void createSaveFile(){
-        Date now = new Date();
-        SimpleDateFormat formatDate = new SimpleDateFormat("dd-MM-yyyy-HH-mm-ss");
-        this.nameSaveFile = this.nameTest + "-" + formatDate.format(now);
-
-        new File(this.folderPath + "\\" + this.nameSaveFile);
-        this.saveMetricsValues();
-    }
-
     public void createNewSave(){
         this.nameTarget = new ArrayList<>();
         this.accuracyMetrics = new ArrayList<>();
     }
 
     public void saveMetricsValues(){
+        Date now = new Date();
+        SimpleDateFormat formatDate = new SimpleDateFormat("dd-MM-yyyy-HH-mm-ss");
+        String nameSaveFile = this.nameTest + "-" + formatDate.format(now);
 
-        FileWriter save = null;
+        FileWriter saveMetrics = null;
         try {
-            save = new FileWriter(this.folderPath + "\\" + this.nameSaveFile + ".txt", StandardCharsets.UTF_8);
-            save.write(this.nameTest + "\r\n");
-            save.write("\r\n");
-            save.write("Accuracy \r\n");
+            saveMetrics = new FileWriter(this.folderPath + "\\" + nameSaveFile + ".txt", StandardCharsets.UTF_8);
+            saveMetrics.write(this.nameTest + "\r\n");
+            saveMetrics.write("\r\n");
+            saveMetrics.write("Accuracy \r\n");
             for (int i = 0; i<this.accuracyMetrics.size(); i++){
-                save.write(this.nameTarget.get(i) + " -> " + this.accuracyMetrics.get(i) + "%");
-                save.write("\r\n");
+                saveMetrics.write(this.nameTarget.get(i) + " -> " + this.accuracyMetrics.get(i) + "%");
+                saveMetrics.write("\r\n");
             }
-            save.write("\r\n");
-            save.write("Precision \r\n");
+            saveMetrics.write("\r\n");
+            saveMetrics.write("Precision \r\n");
             for (int i = 0; i<this.precisionMetrics.size(); i++){
-                save.write(this.nameTarget.get(i) + " -> " + this.precisionMetrics.get(i) + "%");
-                save.write("\r\n");
+                saveMetrics.write(this.nameTarget.get(i) + " -> " + this.precisionMetrics.get(i) + "%");
+                saveMetrics.write("\r\n");
             }
         }catch (IOException e){
             e.printStackTrace();
         }finally {
             try {
-                if (save != null){
-                    save.close();
+                if (saveMetrics != null){
+                    saveMetrics.close();
                 }
             }catch (IOException e2){
                 e2.printStackTrace();
             }
+        }
+    }
+
+    public void saveConfig(int dwellTime, int nbPointsToGet){
+        JSONObject json = new JSONObject();
+        try {
+            json.put("DwellTime", dwellTime);
+            json.put("FixationLength", nbPointsToGet);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try (PrintWriter out = new PrintWriter(new FileWriter(this.folderPath + "\\configuration.json", StandardCharsets.UTF_8))) {
+            out.write(json.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int[] loadConfig(){
+        File config = new File(this.folderPath + "\\configuration.json");
+        if (config.exists()){
+            try {
+                FileReader fileReader = new FileReader(config, StandardCharsets.UTF_8);
+                Object settings = JsonParser.parseReader(fileReader);
+                JsonObject jsonSettings = (JsonObject) settings;
+
+                String dwellTime = String.valueOf(jsonSettings.get("DwellTime"));
+                String fixationLength = String.valueOf(jsonSettings.get("FixationLength"));
+
+                fileReader.close();
+
+                return new int[]{Integer.parseInt(dwellTime), Integer.parseInt(fixationLength)};
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }else {
+            return new int[]{500, 10};
         }
     }
 }

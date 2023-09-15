@@ -3,7 +3,6 @@ package utils;
 import application.ui.panes.TestPane;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.geometry.Point2D;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
@@ -36,9 +35,7 @@ public class AccuracyPrecisionMetrics {
 
     public void createCalculations(){
         int frame = this.settings.dwellTime / this.settings.nbPointsToGet;
-        this.getAccuracyPrecisionPoints = new Timeline(new KeyFrame(Duration.millis(frame), e -> {
-            this.distance += Math.sqrt(Math.pow((this.coordinates.posX - this.circleTarget.getCenterX()),2) + Math.pow((this.coordinates.posY - this.circleTarget.getCenterY()),2));
-        }));
+        this.getAccuracyPrecisionPoints = new Timeline(new KeyFrame(Duration.millis(frame), e -> this.distance += Math.sqrt(Math.pow((this.coordinates.posX - this.circleTarget.getCenterX()),2) + Math.pow((this.coordinates.posY - this.circleTarget.getCenterY()),2))));
         this.getAccuracyPrecisionPoints.setCycleCount(this.settings.nbPointsToGet);
         this.getAccuracyPrecisionPoints.setOnFinished(event -> {
             this.calculationAccuracyPrecision();
@@ -47,7 +44,7 @@ public class AccuracyPrecisionMetrics {
             this.stopCalculations();
 
             if (this.nbTargetDone == this.nbTarget){
-                this.save.createSaveFile();
+                this.save.saveMetricsValues();
                 this.testPane.returnMain();
             }
         });

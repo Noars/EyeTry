@@ -3,7 +3,7 @@
 EyeTry est une application JavaFx qui permet de tester l'exactitude et la précision de différentes Eye Trackers.<br>
 Ce projet est sous license GNU GPL3.
 
-Readme mise à jour le 14 septembre 2023.
+Readme mise à jour le 15 septembre 2023.
 
 # Structure du projet
 
@@ -26,13 +26,15 @@ Date de la release -> Août 2023
 - "io.freefair.lombok" version "8.3" -> release le 28 Août 2023
 - "com.github.spotbugs" version "5.1.3" -> release le 15 Août 2023
 - "com.github.hierynomus.license-report" version "0.16.1" -> release le 04 Mai 2021
-- 'net.researchgate.release' version '3.0.2' -> release le 09 Septembre 2022
+- "net.researchgate.release" version "3.0.2" -> release le 09 Septembre 2022
 
 ### Dependencies
 
 - "com.github.GazePlay:TobiiStreamEngineForJava" version "5.0" -> release le 20 Mars 2020
 - "org.projectlombok:lombok" version "1.18.28" -> release le 25 Mai 2023
-- "org.slf4j:slf4j-simple" version 2.0.9 -> release le 03 Septembre 2023
+- "org.slf4j:slf4j-simple" version "2.0.9" -> release le 03 Septembre 2023
+- "org.json:json" version "20230618" -> release le 18 Juin 2023
+- "com.google.code.gson:gson" version "2.10.1" -> release le 06 Janvier 2023
 
 ## GitHub Action
 

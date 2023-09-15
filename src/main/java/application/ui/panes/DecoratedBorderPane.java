@@ -28,9 +28,7 @@ public class DecoratedBorderPane extends BorderPane {
         });
 
         Button minimize = new CustomizedDecoratedButton("minimiser", "images/minimize.png");
-        minimize.setOnAction((e) -> {
-            primaryStage.setIconified(true);
-        });
+        minimize.setOnAction((e) -> primaryStage.setIconified(true));
 
         GridPane statusGridPane = new GridPane();
         statusGridPane.setAlignment(Pos.CENTER_LEFT);
