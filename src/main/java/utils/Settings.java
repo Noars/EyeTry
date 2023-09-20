@@ -6,7 +6,6 @@ public class Settings {
 
     public int dwellTime = 500;
     public int nbPointsToGet = 10;
-
     public int animationTime = 2000;
 
     public Settings(Save save){
