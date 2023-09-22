@@ -1,64 +1,70 @@
-task generateWindowsInstaller(dependsOn: ['unzipDistribution', 'prepareInnoSetupFiles'], group: 'distribution') {
+tasks.register('generateWindowsInstaller') {
+    dependsOn(['unzipDistribution', 'prepareInnoSetupFiles'])
+    group 'custom jre'
     doLast {
 
-        def innoSetupDir = new File("${buildDir}/innosetup")
+        def innoSetupDir = new File("${projectDir}/build/innosetup")
 
         exec {
             commandLine "C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe", "${innoSetupDir}\\setup.iss"
         }
 
-        delete "${buildDir}/innosetup"
-        delete "${buildDir}/${project.name}-windows"
+        delete "${projectDir}/build/innosetup"
+        delete "${projectDir}/build/${project.name}-windows-x64"
     }
 }
 
-task generateWindowsInstallerInDocker(dependsOn: ['unzipDistribution', 'prepareInnoSetupFiles'], group: 'distribution') {
+tasks.register('generateWindowsInstallerInDocker') {
+    dependsOn(['unzipDistribution', 'prepareInnoSetupFiles'])
     doLast {
         exec {
             workingDir rootDir
-            commandLine "docker", "run", "--rm", "-i", "-v", "${buildDir}:/work", "amake/innosetup", "innosetup/setup.iss"
+            commandLine "docker", "run", "--rm", "-i", "-v", "${projectDir}/build:/work", "amake/innosetup", "innosetup/setup.iss"
         }
     }
 }
 
-task prepareInnoSetupFiles(group: 'distribution') {
+tasks.register('prepareInnoSetupFiles') {
     doLast {
-        def innoSetupDir = new File("${buildDir}/innosetup")
+        def innoSetupDir = new File("${projectDir}/build/innosetup")
 
         innoSetupDir.mkdir()
 
         copy {
-            from("${rootDir}/gradle/innosetup/setup.iss.skel")
+            from("${projectDir}/gradle/innosetup/setup.iss.skel")
             rename("setup.iss.skel", "setup.iss")
             expand([
                     applicationVersion: "latest",
-                    unpackedDirectory : "${project.name}-windows"
+                    unpackedDirectory : "${project.name}-windows-x64"
             ])
             into(innoSetupDir)
         }
 
         copy {
-            from("${rootDir}/gradle/templates/licence.txt")
+            from("${projectDir}/gradle/templates/licence.txt")
             expand([
-                    "date"   : new Date().format('yyyy-MM-dd')
+                    "date": new Date().format('yyyy-MM-dd')
             ])
             into(innoSetupDir)
         }
 
         copy {
-            from("${rootDir}/gradle/innosetup/gazeicon.ico")
+            from("${projectDir}/gradle/innosetup/gazeicon.ico")
             into(innoSetupDir)
         }
 
         copy {
-            from("${rootDir}/gradle/innosetup/gazeicon.bmp")
+            from("${projectDir}/gradle/innosetup/gazeicon.bmp")
             into(innoSetupDir)
         }
     }
 }
 
-task unzipDistribution(dependsOn: ['packageApp'], type: Copy, group: 'distribution') {
-    from zipTree("${buildDir}/distributions/${project.name}-windows.zip")
-    into "${buildDir}"
+tasks.register('unzipDistribution') {
+    dependsOn(['packageApp'])
     doNotTrackState("Cannot access a file in the destination directory")
+    copy {
+        from zipTree("${projectDir}/build/distributions/${project.name}-windows-x64.zip")
+        into "${projectDir}/build"
+    }
 }

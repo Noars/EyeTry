@@ -3,18 +3,21 @@ def javafxVersion = ext.javafxVersion
 apply from: "${rootDir}/gradle/release/innosetup.gradle"
 apply from: "${rootDir}/gradle/release/windows.gradle"
 
-task('downloadAndExtractJREs', group: 'custom jre') {
-    dependsOn downloadAndExtractWindowsJRE
+tasks.register('downloadAndExtractJREs') {
+    dependsOn('downloadAndExtractWindowsJRE')
 }
 
-task('packageAllDists').dependsOn('windowsDistZip')
-
-task packageApp(dependsOn: ['packageAllDists',
-                            'scriptsForRelease'], group: 'distribution') {
-    tasks.findByName('packageAllDists').mustRunAfter('scriptsForRelease')
+tasks.register('packageAllDists') {
+    dependsOn('windowsDistZip')
 }
 
-task scriptsForRelease(dependsOn: ['downloadLicenses'], type: Copy, group: 'distribution') {
+tasks.register('packageApp') {
+    dependsOn(['packageAllDists', 'scriptsForRelease'])
+    mustRunAfter(tasks.named('packageAllDists'))
+}
+
+tasks.register('scriptsForRelease', Copy) {
+    dependsOn('downloadLicenses')
     from "${rootDir}/src/main/bin"
     into "${rootDir}/build/bin"
 
@@ -26,12 +29,13 @@ downloadLicenses {
     dependencyConfiguration = 'compile'
 }
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
 jar {
-    enabled=true
+    dependsOn('createLicence')
+    enabled = true
     manifest {
         attributes(
                 "Implementation-Title": project.name,
@@ -44,51 +48,48 @@ jar {
     }
 }
 
-tasks.jar.dependsOn('createLicence')
-
-task createLicence(dependsOn: ['processResources'], type: Copy, group: 'license') {
+tasks.register('createLicence', Copy) {
+    dependsOn('processResources')
     from("${rootDir}/gradle/templates/licence.txt")
     expand([
-            "date"   : new Date().format('yyyy-MM-dd')
+            "date": new Date().format('yyyy-MM-dd')
     ])
     into("${processResources.destinationDir}/data/common")
 }
 
 distributions {
     windows {
-        contents {
-            with distributions.main.contents
-            from("build/reports")
-            from("build/bin/eyeTry-windows.bat") {
-                into 'bin'
-            }
-            from("build/jre/windows") {
-                into 'lib/jre'
+        main {
+            contents {
+                distributionBaseName = 'EyeTry-windows-x64'
+                from("build/reports")
+                from("build/bin/eyeTry-windows.bat") {
+                    into 'bin'
+                }
+                from("build/jre/windows") {
+                    into 'lib/jre'
+                }
             }
         }
     }
 }
 
-windowsDistZip {
-    dependsOn(downloadAndExtractWindowsJRE)
-    dependsOn(scriptsForRelease)
-}
-
-windowsDistTar {
-    dependsOn(downloadAndExtractWindowsJRE)
-    dependsOn(scriptsForRelease)
-}
-
-tasks.withType(Tar){
-    compression = Compression.GZIP
-    archiveExtension.set('tar.gz')
-}
-
 distZip {
-    duplicatesStrategy = 'exclude'
+    dependsOn(['downloadAndExtractJREs', 'downloadLicenses', 'scriptsForRelease'])
+    duplicatesStrategy.EXCLUDE
+}
+
+distTar {
+    dependsOn(['downloadAndExtractJREs', 'downloadLicenses', 'scriptsForRelease'])
+    duplicatesStrategy.EXCLUDE
 }
 
 release {
     failOnPublishNeeded = false
     failOnCommitNeeded = false
+}
+
+tasks.withType(Tar).configureEach {
+    compression = Compression.GZIP
+    archiveExtension.set('tar.gz')
 }
