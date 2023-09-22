@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import tests.FixedTest;
 import tests.MovingTest;
 import utils.Coordinates;
-import utils.GazePreview;
+import application.ui.shapes.GazePreview;
 import utils.Save;
 import utils.Settings;
 
@@ -57,7 +57,7 @@ public class TestPane extends Pane {
                 this.fixedTest.createTargetFixedTest();
             }
             case "2" -> {
-                this.movingTest = new MovingTest();
+                this.movingTest = new MovingTest(this, this.tobiiGazeDeviceManager, this.coordinates, this.save, this.settings);
                 this.movingTest.createTargetMovingTest();
             }
             default -> log.warn("Error when starting test -> " + this.actualTest);

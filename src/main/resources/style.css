@@ -44,6 +44,18 @@
     -fx-font-family: Futura;
 }
 
+.gazeOn {
+    -fx-font-weight: bold;
+    -fx-text-fill: green;
+    -fx-font-family: Futura;
+}
+
+.gazeOff {
+    -fx-font-weight: bold;
+    -fx-text-fill: red;
+    -fx-font-family: Futura;
+}
+
 .selected{
     -fx-background-color: white;
     -fx-text-fill: white;
@@ -58,27 +70,27 @@
 }
 
 .green{
-    -fx-background-color: #57ae3a;
+    -fx-background-color: #40911b;
 }
 
 .green:hover{
-    -fx-background-color: derive( #57ae3a, 20% );
+    -fx-background-color: derive( #40911b, 20% );
 }
 
 .grey{
-    -fx-background-color: #969696;
+    -fx-background-color: #6c6c6c;
 }
 
 .grey:hover {
-    -fx-background-color: derive( #969696 , 20% );
+    -fx-background-color: derive( #6c6c6c, 20% );
 }
 
 .orange{
-    -fx-background-color: #ffa969;
+    -fx-background-color: #ff8a31;
 }
 
 .orange:hover{
-    -fx-background-color: derive( #ffa969, 20% );
+    -fx-background-color: derive( #ff8a31, 20% );
 }
 
 .red{
@@ -87,4 +99,12 @@
 
 .red:hover{
     -fx-background-color: derive(crimson, 20%);
+}
+
+.blue{
+    -fx-background-color: #0e4978;
+}
+
+.blue:hover {
+    -fx-background-color: derive( #0e4978 , 20% );
 }

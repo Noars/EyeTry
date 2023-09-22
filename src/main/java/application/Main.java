@@ -42,13 +42,13 @@ public class Main extends Application {
         primaryStage.setTitle("EyeTry");
 
         this.save = new Save();
-        this.settings = new Settings();
+        this.settings = new Settings(this.save);
         this.coordinates = new Coordinates(primaryStage.getWidth(), primaryStage.getHeight());
         this.tobiiGazeDeviceManager = GazeDeviceManagerFactory.instance.createNewGazeListener(this.coordinates);
         this.mainBorderPane = new MainBorderPane(this, primaryStage, this.save);
         this.testBorderPane = new TestBorderPane(this, primaryStage);
         this.testPane = new TestPane(this, primaryStage, this.coordinates, this.tobiiGazeDeviceManager, this.save, this.settings);
-        this.decoratedBorderPane = new DecoratedBorderPane(primaryStage, this.tobiiGazeDeviceManager);
+        this.decoratedBorderPane = new DecoratedBorderPane(primaryStage, this.tobiiGazeDeviceManager, this.coordinates);
         this.decoratedBorderPane.setCenter(this.mainBorderPane);
         this.settingsBorderPane = new SettingsBorderPane(this, primaryStage, this.settings);
 

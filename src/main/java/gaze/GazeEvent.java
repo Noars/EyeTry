@@ -4,7 +4,6 @@ package gaze;
  * Created by schwab on 14/08/2016.
  */
 
-import javafx.event.EventTarget;
 import javafx.event.EventType;
 import javafx.scene.input.InputEvent;
 import lombok.Getter;
@@ -17,10 +16,10 @@ public class GazeEvent extends InputEvent {
 
     public static final EventType<GazeEvent> GAZE_MOVED = new EventType<>(GazeEvent.ANY, "GAZE_MOVED");
 
-    public static final EventType<GazeEvent> GAZE_ENTERED_TARGET = new EventType<GazeEvent>(GazeEvent.ANY,
+    public static final EventType<GazeEvent> GAZE_ENTERED_TARGET = new EventType<>(GazeEvent.ANY,
             "GAZE_ENTERED_TARGET");
 
-    public static final EventType<GazeEvent> GAZE_EXITED_TARGET = new EventType<GazeEvent>(GazeEvent.ANY,
+    public static final EventType<GazeEvent> GAZE_EXITED_TARGET = new EventType<>(GazeEvent.ANY,
             "GAZE_EXITED_TARGET");
 
     public static final EventType<GazeEvent> GAZE_ENTERED = new EventType<>(GazeEvent.GAZE_ENTERED_TARGET,
