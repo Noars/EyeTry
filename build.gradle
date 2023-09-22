@@ -48,6 +48,10 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
 }
 
+test {
+    useJUnitPlatform()
+}
+
 spotbugs {
     excludeFilter.fileValue(file("spotbugs-exclude.xml"))
 }

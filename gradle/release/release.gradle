@@ -8,7 +8,7 @@ tasks.register('downloadAndExtractJREs') {
 }
 
 tasks.register('packageAllDists') {
-    dependsOn('windowsDistZip')
+    dependsOn(['distZip', 'distTar'])
 }
 
 tasks.register('packageApp') {
@@ -75,12 +75,12 @@ distributions {
 }
 
 distZip {
-    dependsOn(['downloadAndExtractJREs', 'downloadLicenses', 'scriptsForRelease'])
+    dependsOn(['downloadAndExtractJREs', 'downloadLicenses', 'scriptsForRelease', 'test'])
     duplicatesStrategy.EXCLUDE
 }
 
 distTar {
-    dependsOn(['downloadAndExtractJREs', 'downloadLicenses', 'scriptsForRelease'])
+    dependsOn(['downloadAndExtractJREs', 'downloadLicenses', 'scriptsForRelease', 'test'])
     duplicatesStrategy.EXCLUDE
 }
 

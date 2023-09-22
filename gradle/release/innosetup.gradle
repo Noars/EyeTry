@@ -60,11 +60,9 @@ tasks.register('prepareInnoSetupFiles') {
     }
 }
 
-tasks.register('unzipDistribution') {
+tasks.register('unzipDistribution', Copy) {
     dependsOn(['packageApp'])
+    from zipTree("${projectDir}/build/distributions/${project.name}-windows-x64.zip")
+    into "${projectDir}/build"
     doNotTrackState("Cannot access a file in the destination directory")
-    copy {
-        from zipTree("${projectDir}/build/distributions/${project.name}-windows-x64.zip")
-        into "${projectDir}/build"
-    }
 }

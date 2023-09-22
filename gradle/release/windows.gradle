@@ -1,35 +1,31 @@
-def downloadLocation = new File(project.repositories.mavenLocal().url).getAbsolutePath()
 def jreSource = 'https://cdn.azul.com/zulu/bin/'
 def jreFolder = "${projectDir}/build/jre"
 def x64filename = "zulu17.44.15-ca-jdk17.0.8-win_x64"
 
-tasks.register('downloadWindowsJRE', Download) {
+tasks.register("downloadWindowsJRE", Download) {
     download {
         src "${jreSource}/${x64filename}.zip"
-        dest new File("${downloadLocation}/jre", 'windows-x64.zip')
+        dest new File("${jreFolder}", 'windows-x64.zip')
         overwrite false
     }
 }
 
-tasks.register('extractWindowsJRE', Copy) {
-    dependsOn(['downloadWindowsJRE'])
-    doLast {
-        copy {
-            from zipTree("${downloadLocation}/jre/windows-x64.zip")
-            into "${jreFolder}/windows"
-        }
-    }
+tasks.register("extractWindowsJRE", Copy){
+    dependsOn("downloadWindowsJRE")
+
+    from zipTree("${jreFolder}/windows-x64.zip")
+    into "${jreFolder}/windows"
+
+    from new File("${jreFolder}/windows/${x64filename}")
+    into "${jreFolder}/windows"
 }
 
-tasks.register('downloadAndExtractWindowsJRE') {
-    dependsOn(['extractWindowsJRE'])
-    group 'jre'
-    doLast {
-        copy {
-            from new File("${jreFolder}/windows/${x64filename}")
-            into "${jreFolder}/windows"
-        }
+tasks.register("downloadAndExtractWindowsJRE") {
+    dependsOn("extractWindowsJRE")
+    group "jre"
 
+    doLast {
+        delete "${jreFolder}/windows-x64.zip"
         delete "${jreFolder}/windows/${x64filename}"
     }
 }
