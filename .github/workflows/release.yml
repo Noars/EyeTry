@@ -24,7 +24,7 @@ jobs:
           ./gradlew --stacktrace --info downloadAndExtractJREs
           chmod -R 777 build/jre
 
-      - name: Generate releases
+      - name: Generate Zip & Tar releases
         run: |
           ./gradlew --stacktrace --info packageApp
 
@@ -64,5 +64,5 @@ jobs:
           commit: "master"
           prerelease: true
           draft: false
-          artifacts: "./build/distributions/EyeTry-windows.zip,./build/distributions/EyeTry-windows-x64-installer.exe"
+          artifacts: "./build/distributions/EyeTry-windows-x64.zip,./build/distributions/EyeTry-windows-x64.tar.gz,./build/distributions/EyeTry-windows-x64-installer.exe"
 
