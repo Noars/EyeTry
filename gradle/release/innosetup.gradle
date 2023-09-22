@@ -1,6 +1,6 @@
 tasks.register('generateWindowsInstaller') {
     dependsOn(['unzipDistribution', 'prepareInnoSetupFiles'])
-    group 'custom jre'
+    group 'innosetup'
     doLast {
 
         def innoSetupDir = new File("${projectDir}/build/innosetup")

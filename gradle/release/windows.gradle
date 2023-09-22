@@ -13,14 +13,17 @@ tasks.register('downloadWindowsJRE', Download) {
 
 tasks.register('extractWindowsJRE', Copy) {
     dependsOn(['downloadWindowsJRE'])
-    copy {
-        from zipTree("${downloadLocation}/jre/windows-x64.zip")
-        into "${jreFolder}/windows"
+    doLast {
+        copy {
+            from zipTree("${downloadLocation}/jre/windows-x64.zip")
+            into "${jreFolder}/windows"
+        }
     }
 }
 
 tasks.register('downloadAndExtractWindowsJRE') {
     dependsOn(['extractWindowsJRE'])
+    group 'jre'
     doLast {
         copy {
             from new File("${jreFolder}/windows/${x64filename}")
