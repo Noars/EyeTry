@@ -20,7 +20,6 @@ jobs:
 
       - name: Generate Zip & Tar releases
         run: |
-          chmod +x ./gradlew
           ./gradlew --stacktrace --info packageApp
 
 #      - name: Generate Windows Installer with InnoSetup
