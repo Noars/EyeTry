@@ -25,7 +25,6 @@ tasks.register("downloadAndExtractWindowsJRE") {
     group "jre"
 
     doLast {
-        delete "${jreFolder}/windows-x64.zip"
         delete "${jreFolder}/windows/${x64filename}"
     }
 }
