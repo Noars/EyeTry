@@ -6,7 +6,7 @@ tasks.register("downloadWindowsJRE", Download) {
     download {
         src "${jreSource}/${x64filename}.zip"
         dest new File("${jreFolder}", 'windows-x64.zip')
-        overwrite false
+        overwrite true
     }
 }
 
