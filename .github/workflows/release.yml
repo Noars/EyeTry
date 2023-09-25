@@ -23,11 +23,11 @@ jobs:
           chmod +x ./gradlew
           ./gradlew --stacktrace --info packageApp
 
-      - name: Generate Windows Installer with InnoSetup
-        run: |
-          chmod -R 777 build/distributions
-          chmod -R 777 build/jre
-          ./gradlew --stacktrace --info generateWindowsInstallerInDocker
+#      - name: Generate Windows Installer with InnoSetup
+#        run: |
+#          chmod -R 777 build/distributions
+#          chmod -R 777 build/jre
+#          ./gradlew --stacktrace --info generateWindowsInstallerInDocker
 
       - name: Get Env
         run: |
