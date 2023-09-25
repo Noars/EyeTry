@@ -59,5 +59,3 @@ spotbugs {
 startScripts {
     enabled = false
 }
-
-defaultTasks 'clean', 'build'
