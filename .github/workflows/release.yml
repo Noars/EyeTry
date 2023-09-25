@@ -18,14 +18,9 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Download JREs
-        run: |
-          chmod +x ./gradlew
-          ./gradlew --stacktrace --info downloadAndExtractJREs
-          chmod -R 777 build/jre
-
       - name: Generate Zip & Tar releases
         run: |
+          chmod +x ./gradlew
           ./gradlew --stacktrace --info packageApp
 
 #      - name: Generate Windows Installer with InnoSetup

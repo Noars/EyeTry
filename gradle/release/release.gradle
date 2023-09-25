@@ -8,7 +8,7 @@ tasks.register('downloadAndExtractJREs') {
 }
 
 tasks.register('packageAllDists') {
-    dependsOn(['distZip', 'distTar'])
+    dependsOn(['windowsDistZip', 'windowsDistTar'])
 }
 
 tasks.register('packageApp') {
@@ -59,9 +59,9 @@ tasks.register('createLicence', Copy) {
 
 distributions {
     windows {
-        main {
             contents {
                 distributionBaseName = 'EyeTry-windows-x64'
+                with main.contents
                 from("build/reports")
                 from("build/bin/eyeTry-windows.bat") {
                     into 'bin'
@@ -70,13 +70,20 @@ distributions {
                     into 'lib/jre'
                 }
             }
-        }
     }
+}
+
+windowsDistZip {
+    dependsOn(['downloadAndExtractJREs', 'downloadLicenses', 'scriptsForRelease', 'test'])
 }
 
 distZip {
     dependsOn(['downloadAndExtractJREs', 'downloadLicenses', 'scriptsForRelease', 'test'])
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+windowsDistTar {
+    dependsOn(['downloadAndExtractJREs', 'downloadLicenses', 'scriptsForRelease', 'test'])
 }
 
 distTar {
