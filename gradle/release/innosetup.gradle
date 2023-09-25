@@ -18,7 +18,7 @@ tasks.register('generateWindowsInstallerInDocker') {
     dependsOn(['unzipDistribution', 'prepareInnoSetupFiles'])
     doLast {
         exec {
-            workingDir rootDir
+            workingDir projectDir
             commandLine "docker", "run", "--rm", "-i", "-v", "${projectDir}/build:/work", "amake/innosetup", "innosetup/setup.iss"
         }
     }
