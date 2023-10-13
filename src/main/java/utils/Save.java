@@ -66,14 +66,14 @@ public class Save {
                 saveMetrics.write("\r\n");
             }
         }catch (IOException e){
-            e.printStackTrace();
+            e.printStackTrace(System.out);
         }finally {
             try {
                 if (saveMetrics != null){
                     saveMetrics.close();
                 }
             }catch (IOException e2){
-                e2.printStackTrace();
+                e2.printStackTrace(System.out);
             }
         }
     }
@@ -85,12 +85,12 @@ public class Save {
             json.put("FixationLength", nbPointsToGet);
             json.put("AnimationTime", animationTime);
         } catch (JSONException e) {
-            e.printStackTrace();
+            e.printStackTrace(System.out);
         }
         try (PrintWriter out = new PrintWriter(new FileWriter(this.folderPath + "\\configuration.json", StandardCharsets.UTF_8))) {
             out.write(json.toString());
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(System.out);
         }
     }
 

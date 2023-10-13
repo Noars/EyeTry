@@ -28,7 +28,7 @@ public class Settings {
         if (!newValue.matches("\\d*")) {
             newValue = newValue.replaceAll("[^\\d]", "");
         }
-        if (newValue.equals("")) {
+        if (newValue.isEmpty()) {
             newValue = "0";
         }
         return newValue;

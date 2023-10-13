@@ -9,6 +9,7 @@ import javafx.scene.input.InputEvent;
 import lombok.Getter;
 import lombok.ToString;
 
+@Getter
 @ToString
 public class GazeEvent extends InputEvent {
 
@@ -27,13 +28,10 @@ public class GazeEvent extends InputEvent {
 
     public static final EventType<GazeEvent> GAZE_EXITED = new EventType<>(GazeEvent.GAZE_EXITED_TARGET, "GAZE_EXITED");
 
-    @Getter
     private final long time;
 
-    @Getter
     private final double x;
 
-    @Getter
     private final double y;
 
     public GazeEvent(EventType<GazeEvent> et, long time, double x, double y) {

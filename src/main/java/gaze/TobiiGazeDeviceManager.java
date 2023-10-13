@@ -30,7 +30,7 @@ public class TobiiGazeDeviceManager extends AbstractGazeDeviceManager{
         try {
             this.positionPollerRunnable = new PositionPollerRunnable(this, this.coordinates);
         } catch (AWTException e) {
-            e.printStackTrace();
+            e.printStackTrace(System.out);
         }
         this.executorService = Executors.newFixedThreadPool(4,
                 (Runnable r) -> {

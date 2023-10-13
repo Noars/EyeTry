@@ -3,21 +3,21 @@
 EyeTry est une application JavaFx qui permet de tester l'exactitude et la précision de différentes Eye Trackers.<br>
 Ce projet est sous license GNU GPL3.
 
-Readme mise à jour le 22 septembre 2023.
+Readme mise à jour le 13 octobre 2023.
 
 # Structure du projet
 
 ## SDK
 
-- SDK Azul Zulu Community 17.0.8+7
-- JavaFx 20.0.2+100
+- SDK Azul Zulu Community 21
+- JavaFx 20
 - Language level 17 (Celui par défaut du SDK - Types scellés, sémantique à virgule flottante toujours stricte)
 
 Date de la release -> Août 2023
 
 ## Gradle
 
-- Gradle version 8.3 -> release le 17 Août 2023
+- Gradle version 8.4 -> release le 08 Octobre 2023
 
 ### Gradle Plugins
 

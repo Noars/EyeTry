@@ -44,7 +44,7 @@ public class MainBorderPane extends BorderPane {
             try {
                 Desktop.getDesktop().open(new File(save.folderPath));
             } catch (IOException ex) {
-                ex.printStackTrace();
+                ex.printStackTrace(System.out);
             }
         });
         return folder;
