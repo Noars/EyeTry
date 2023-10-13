@@ -41,6 +41,7 @@ public class Save {
     public void createNewSave(){
         this.nameTarget = new ArrayList<>();
         this.accuracyMetrics = new ArrayList<>();
+        this.precisionMetrics = new ArrayList<>();
     }
 
     public void saveMetricsValues(){

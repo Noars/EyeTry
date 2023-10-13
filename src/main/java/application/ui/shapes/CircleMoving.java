@@ -29,7 +29,7 @@ public class CircleMoving extends Circle {
     public void createHorizontalMove(Cross cross, double xTranslation){
         this.animation = new Timeline();
         this.animation.getKeyFrames().addAll(
-                new KeyFrame(Duration.seconds(2000),
+                new KeyFrame(Duration.millis(2000),
                         new KeyValue(this.translateXProperty(), xTranslation),
                         new KeyValue(cross.translateXProperty(), xTranslation)),
                 new KeyFrame(Duration.millis(2000),
