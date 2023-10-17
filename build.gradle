@@ -11,7 +11,7 @@ plugins {
 }
 
 group 'main'
-ext.javafxVersion = "20.0.2"
+ext.javafxVersion = "21"
 
 apply from: "${rootDir}/gradle/release/release.gradle"
 apply from: "${rootDir}/gradle/tobii/drivers.gradle"

@@ -10,7 +10,7 @@ Readme mise à jour le 13 octobre 2023.
 ## SDK
 
 - SDK Azul Zulu Community 21
-- JavaFx 20
+- JavaFx 21
 - Language level 17 (Celui par défaut du SDK - Types scellés, sémantique à virgule flottante toujours stricte)
 
 Date de la release -> Août 2023
